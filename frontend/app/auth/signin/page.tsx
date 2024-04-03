@@ -1,13 +1,61 @@
-import React from "react";
+"use client"
+import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
+import { useDispatch } from 'react-redux';
+import { toast } from "react-toastify";
+import { loginSuccess } from "@/store/actions/authAction";
+import useLocalStorage from "@/hooks/useLocalStorage";
+import { useRouter } from 'next/navigation'
+import { constants } from "@/app/constants";
+import Loader from "@/components/common/Loader";
+// export const dynamic = 'force-dynamic';
 
 const SignIn: React.FC = () => {
-  return (
-    <>
-      <Breadcrumb pageName="Sign In" />
+  const dispatch = useDispatch();
 
+  const [formData, setFormData] = useState({ email: '', password: '' })
+  const [isLoading, setIsLoading] = useState(false)
+  const [token, setToken] = useLocalStorage("token", null)
+
+  const router = useRouter();
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setFormData({ ...formData, [name]: value })
+  }
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    try {
+      setIsLoading(true)
+      const res = await fetch(
+        `${constants.BASE_URL}/api/auth/signin`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
+
+      const data = await res.json();
+      if (!data.success) {
+        setIsLoading(false)
+        toast.error(data.message)
+        return
+      }
+
+      dispatch(loginSuccess(data.finalData.user));
+      setToken(data.finalData.token)
+      router.push('/main/dashboard');
+      toast.success('Login Success');
+    } catch (error) {
+      console.log("error in login (service) => ", error);
+    }
+    setIsLoading(false)
+  }
+  return (
+    <div className="min-h-screen flex flex-col justify-center">
       <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
         <div className="flex flex-wrap items-center">
           <div className="hidden w-full xl:block xl:w-1/2">
@@ -58,7 +106,7 @@ const SignIn: React.FC = () => {
                 Sign In 
               </h2>
 
-              <form>
+              <form onSubmit={handleSubmit}>
                 <div className="mb-4">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
                     Email
@@ -68,7 +116,10 @@ const SignIn: React.FC = () => {
                       type="email"
                       placeholder="Enter your email"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                    />
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                   />
 
                     <span className="absolute right-4 top-4">
                       <svg
@@ -92,13 +143,16 @@ const SignIn: React.FC = () => {
 
                 <div className="mb-6">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
-                    Re-type Password
+                    Password
                   </label>
                   <div className="relative">
                     <input
                       type="password"
                       placeholder="6+ Characters, 1 Capital letter"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                      name="password"
+                      value={formData.password}
+                      onChange={handleChange}
                     />
 
                     <span className="absolute right-4 top-4">
@@ -183,7 +237,7 @@ const SignIn: React.FC = () => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

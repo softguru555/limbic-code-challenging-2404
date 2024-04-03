@@ -1,9 +1,34 @@
-import React from "react";
+"use client"
+import React, {useState} from "react";
 import Link from "next/link";
 import Image from "next/image";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-
+import { constants } from "@/app/constants";
+import { useRouter } from "next/navigation";
 const SignUp: React.FC = () => {
+  const [formData, setFormData] = useState({ email: '', password:'', name: '' })
+  const router = useRouter();
+  const handleChange = async(e) => {
+    const { name, value } = e.target;
+    setFormData({...formData, [name]: value});
+  }
+  const handleSubmit = async(e) => {
+    e.preventDefault();
+    const res = fetch(
+      `${constants.BASE_URL}/api/auth/signup`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      }
+    );
+    if((await res).status == 200){
+      router.push('./signin');
+    }
+  }
+
   return (
     <>
       <Breadcrumb pageName="Sign Up" />
@@ -57,7 +82,7 @@ const SignUp: React.FC = () => {
                 Sign Up to TailAdmin
               </h2>
 
-              <form>
+              <form onSubmit={handleSubmit}>
                 <div className="mb-4">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
                     Name
@@ -67,7 +92,10 @@ const SignUp: React.FC = () => {
                       type="text"
                       placeholder="Enter your full name"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
-                    />
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                   />
 
                     <span className="absolute right-4 top-4">
                       <svg
@@ -102,6 +130,9 @@ const SignUp: React.FC = () => {
                       type="email"
                       placeholder="Enter your email"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
                     />
 
                     <span className="absolute right-4 top-4">
@@ -133,6 +164,9 @@ const SignUp: React.FC = () => {
                       type="password"
                       placeholder="Enter your password"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                      name="password"
+                      value={formData.password}
+                      onChange={handleChange}
                     />
 
                     <span className="absolute right-4 top-4">
