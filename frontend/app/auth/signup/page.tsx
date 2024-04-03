@@ -5,6 +5,8 @@ import Image from "next/image";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import { constants } from "@/app/constants";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
+
 const SignUp: React.FC = () => {
   const [formData, setFormData] = useState({ email: '', password:'', name: '' })
   const router = useRouter();
@@ -24,7 +26,10 @@ const SignUp: React.FC = () => {
         body: JSON.stringify(formData),
       }
     );
+
     if((await res).status == 200){
+    toast.success('Signup Success');
+
       router.push('./signin');
     }
   }

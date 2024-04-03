@@ -9,19 +9,21 @@ import config from './config';
 // import cors from 'cors';
 const cors = require('cors');
 const app = express();
+
 app.use(json());
 app.use(cors());
-console.log("djdjdjd");
 // Add the routes with the base prefix
 app.use('/' + config.prefix, routes);
 
 // Add error handling
 app.use(errorHandler);
+
 app.use(function(req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader("Access-Control-Allow-Headers", "authorization");
     next();
   });
 mongoose

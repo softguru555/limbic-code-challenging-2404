@@ -37,17 +37,17 @@ const SignIn: React.FC = () => {
           body: JSON.stringify(formData),
         }
       );
-
       const data = await res.json();
-      if (!data.success) {
+      if (!data.user) {
         setIsLoading(false)
         toast.error(data.message)
         return
       }
-
-      dispatch(loginSuccess(data.finalData.user));
-      setToken(data.finalData.token)
-      router.push('/main/dashboard');
+      
+      dispatch(loginSuccess(data.user));
+      setToken(data.token);
+      window.sessionStorage.setItem("token", data.token);
+      router.push('/main/agent', data);
       toast.success('Login Success');
     } catch (error) {
       console.log("error in login (service) => ", error);

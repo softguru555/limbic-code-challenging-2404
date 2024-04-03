@@ -8,6 +8,7 @@ export interface CustomRequest extends Request {
 
 export const checkJwt = (req: Request, res: Response, next: NextFunction) => {
     // Get the jwt token from the head
+    console.log("token", req.headers)
     const token = <string>req.headers['authorization'];
     let jwtPayload;
 
@@ -15,13 +16,14 @@ export const checkJwt = (req: Request, res: Response, next: NextFunction) => {
     try {
         jwtPayload = <any>verify(token?.split(' ')[1], config.jwt.secret!, {
             complete: true,
-            audience: config.jwt.audience,
-            issuer: config.jwt.issuer,
+            // audience: config.jwt.audience,
+            // issuer: config.jwt.issuer,
             algorithms: ['HS256'],
             clockTolerance: 0,
             ignoreExpiration: false,
             ignoreNotBefore: false
         });
+
         (req as CustomRequest).token = jwtPayload;
     } catch (error) {
         res.status(401)

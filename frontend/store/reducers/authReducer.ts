@@ -12,7 +12,7 @@ const authReducer = (state = initialState, action) => {
     case LOGIN_SUCCESS:
       return {
         ...state,
-        _id: action.payload._id,
+        _id: action.payload.id,
         isAuthenticated: true,
         username: action.payload.username,
         email: action.payload.email,
@@ -21,7 +21,7 @@ const authReducer = (state = initialState, action) => {
     case UPDATEAUTH:
       return {
         ...state,
-        _id: action.payload._id,
+        _id: action.payload.id,
         isAuthenticated: true,
         username: action.payload.username,
         email: action.payload.email,

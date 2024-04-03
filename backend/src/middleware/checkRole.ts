@@ -8,19 +8,19 @@ export const checkRole = (roles: Array<string>) => {
         const user = await User.findById((req as CustomRequest).token.payload.userId);
 
         if (!user) {
-            res.status(404)
+            return res.status(404)
                 .type('json')
                 .send(JSON.stringify({ message: 'User not found' }));
-            return;
+            
         }
 
         // Check if array of authorized roles includes the user's role
         if (roles.indexOf(user.role) > -1) next();
         else {
-            res.status(403)
+            return res.status(403)
                 .type('json')
                 .send(JSON.stringify({ message: 'Not enough permissions' }));
-            return;
+            
         }
     };
 };
