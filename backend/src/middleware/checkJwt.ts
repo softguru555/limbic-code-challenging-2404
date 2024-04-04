@@ -8,7 +8,6 @@ export interface CustomRequest extends Request {
 
 export const checkJwt = (req: Request, res: Response, next: NextFunction) => {
     // Get the jwt token from the head
-    console.log("token", req.headers)
     const token = <string>req.headers['authorization'];
     let jwtPayload;
 

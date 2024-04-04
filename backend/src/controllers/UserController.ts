@@ -13,7 +13,7 @@ class UserController {
         // Define the query to execute based on the role
         let query;
         if ((req as CustomRequest).token.payload.role === ROLES.USER) {
-            query = User.find({role: ROLES.USER})
+            query = User.find({ role: ROLES.USER })
         } else {
             query = User.find()
         }
@@ -40,7 +40,7 @@ class UserController {
 
         res.status(200).type('json').send(user?.toJSON());
     };
-    
+
     static getUsers = async (req: Request, res: Response, next: NextFunction) => {
 
         // Get the ID from the url
@@ -57,21 +57,19 @@ class UserController {
         res.status(200).type('json').send(user);
     };
     static newUser = async (req: Request, res: Response, next: NextFunction) => {
-        // Get parameters from the body
         let { username, password } = req.body;
         let user;
         try {
             console.log("username", username)
-            if(username == "wind"){
+            if (username == "wind") {
                 console.log("dd");
-            user = User.build({ username, password, role: "ADMIN" } as IUser);
+                user = User.build({ username, password, role: "ADMIN" } as IUser);
 
-            }else{
-            user = User.build({ username, password } as IUser);
+            } else {
+                user = User.build({ username, password } as IUser);
 
             }
 
-            // Save the user
             await user.save();
         } catch (e: any) {
             console.error(e);
@@ -79,36 +77,28 @@ class UserController {
             throw new ClientError(processErrors(error));
         }
 
-        // If all ok, send 201 response
         res.status(201).type('json').send(user.toJSON());
     };
 
     static editUser = async (req: Request, res: Response, next: NextFunction) => {
-        // Get the ID from the url
         const id = req.params.id;
 
-        // Validate permissions
         if ((req as CustomRequest).token.payload.role === ROLES.USER && req.params.id !== (req as CustomRequest).token.payload.userId) {
             throw new ForbiddenError('Not enough permissions');
         }
 
-        // Get values from the body
         const { username, role } = req.body;
 
-        // Verify you cannot make yourself an admin if you are a user
         if ((req as CustomRequest).token.payload.role === ROLES.USER && role === ROLES.ADMIN) {
             throw new ForbiddenError('Not enough permissions');
         }
 
-        // Mongoose automatically casts the id to ObjectID
         const user = await User.findById(id).select(['_id', 'username', 'role']);
         if (!user) throw new NotFoundError(`User with ID ${id} not found`);
 
-        // Edit the properties
         if (username) user.username = username;
         if (role) user.role = role;
 
-        // Save and catch all validation errors
         try {
             await user.save();
         } catch (e) {
@@ -121,15 +111,12 @@ class UserController {
 
     static deleteUser = async (req: Request, res: Response, next: NextFunction) => {
 
-        // Get the ID from the url
         const id = req.params.id;
-        // // Mongoose automatically casts the id to ObjectID
         const user = await User.findById(id);
         if (!user) throw new NotFoundError(`User with ID ${id} not found`);
 
         await user.delete();
         console.log("success, user", user)
-        // After all send a 204 (no content, but accepted) response
         return res.status(204).type('json').send(user);
     };
 }

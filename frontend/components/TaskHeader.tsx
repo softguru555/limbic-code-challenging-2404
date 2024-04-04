@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import TaskPopup from "./TaskPopup";
+import TaskPopup from "./AddQuestion";
 import Image from "next/image";
 
 const TaskHeader = () => {

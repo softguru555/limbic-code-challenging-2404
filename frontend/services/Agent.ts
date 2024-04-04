@@ -8,7 +8,7 @@ import { toast } from "react-toastify";
 export const getAgent = async (dispatch) => {
   try {
     const res = ApiHeader.get(
-      '/api/user/getUsers', authHeader() 
+      '/api/user/getUsers', authHeader()
     );
     const data = (await res).data;
     return dispatch(initiateUser(data));
@@ -17,12 +17,12 @@ export const getAgent = async (dispatch) => {
   }
 };
 
-export const deleteAgent = async (dispatch:any, id:any) => {
+export const deleteAgent = async (dispatch: any, id: any) => {
   try {
     const res = ApiHeader.delete(`/api/user/userDelete/${id}`, authHeader());
     console.log("id", id);
     return dispatch(deleteUser(id));
- 
+
   } catch (error) {
     console.log("error in update (service) => ", error.response.data);
     toast.error(error.response.data.message)
