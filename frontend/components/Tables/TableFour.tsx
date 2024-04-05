@@ -4,55 +4,14 @@ import DropdownDefault from "../Dropdowns/DropdownDefault";
 import React, { useEffect, useMemo, useState } from "react";
 import { getAgent, deleteAgent } from "@/services/Agent";
 import { useDispatch, useSelector } from "react-redux";
-const brandData: BRAND[] = [
-  {
-    logo: "/images/brand/brand-01.svg",
-    name: "Google",
-    visitors: 3.5,
-    revenues: "5,768",
-    sales: 590,
-    conversion: 4.8,
-  },
-  {
-    logo: "/images/brand/brand-02.svg",
-    name: "Twitter",
-    visitors: 2.2,
-    revenues: "4,635",
-    sales: 467,
-    conversion: 4.3,
-  },
-  {
-    logo: "/images/brand/brand-06.svg",
-    name: "Youtube",
-    visitors: 2.1,
-    revenues: "4,290",
-    sales: 420,
-    conversion: 3.7,
-  },
-  {
-    logo: "/images/brand/brand-04.svg",
-    name: "Vimeo",
-    visitors: 1.5,
-    revenues: "3,580",
-    sales: 389,
-    conversion: 2.5,
-  },
-  {
-    logo: "/images/brand/brand-05.svg",
-    name: "Facebook",
-    visitors: 3.5,
-    revenues: "6,768",
-    sales: 390,
-    conversion: 4.2,
-  },
-];
+
 
 const TableFour: React.FC = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     getAgent(dispatch);
   }, [dispatch]);
-  const { user } = useSelector((state:any) => state.user);
+  const { user } = useSelector((state: any) => state.user);
   const [id, setId] = useState('');
   const [isDeleting, setDelAction] = useState(false);
   const [isEdition, setEdition] = useState(false);
@@ -60,9 +19,8 @@ const TableFour: React.FC = () => {
     setId(e.target.name);
     setDelAction(true);
   }
-  if(isDeleting == true){
+  if (isDeleting == true) {
     const data = deleteAgent(dispatch, id);
-    console.log("djdjd", data);
     setDelAction(false);
   }
   // useEffect(() => {
@@ -109,11 +67,7 @@ const TableFour: React.FC = () => {
 
           {user.map((brand, key) => (
             <div
-              className={`grid grid-cols-3 sm:grid-cols-4 ${
-                key === brandData.length - 1
-                  ? ""
-                  : "border-b border-stroke dark:border-strokedark"
-              }`}
+              className="grid grid-cols-3 sm:grid-cols-4"
               key={key}
             >
               <div className="flex items-center gap-3 p-2.5 xl:p-5">
@@ -134,18 +88,18 @@ const TableFour: React.FC = () => {
 
               <div className="items-center justify-center p-2.5 sm:flex ">
                 <button
-                className="py-1 px-2 font-medium text-black hover:bg-primary hover:text-white  dark:text-white sm:py-3 sm:px-6"
-                onClick={delUser}
-                name={brand.id}
-              >
-                delete
-              </button>
-              <button
-                className="py-1 px-2 font-medium text-black hover:bg-primary hover:text-white  dark:text-white sm:py-3 sm:px-6"
-                
-              >
-                edit
-              </button>
+                  className="py-1 px-2 font-medium text-black hover:bg-primary hover:text-white  dark:text-white sm:py-3 sm:px-6"
+                  onClick={delUser}
+                  name={brand.id}
+                >
+                  delete
+                </button>
+                <button
+                  className="py-1 px-2 font-medium text-black hover:bg-primary hover:text-white  dark:text-white sm:py-3 sm:px-6"
+
+                >
+                  edit
+                </button>
               </div>
             </div>
           ))}

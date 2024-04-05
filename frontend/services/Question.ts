@@ -1,5 +1,6 @@
 import axios from "axios";
 import { initiateQuestion, deleteQuestion } from "@/store/actions/questionAction";
+import { initiateAnswer, deleteAnswer } from "@/store/actions/answerAction";
 import { constants } from "@/app/constants";
 import { headers } from "next/dist/client/components/headers";
 import { ApiHeader } from "@/app/apiConstants";
@@ -28,6 +29,28 @@ export const getQues = async (dispatch) => {
     );
     const data = (await res).data
     return dispatch(initiateQuestion(data));
+  } catch (error) {
+    console.log("Error fetching data:", error);
+  }
+};
+export const getAnswers = async (dispatch, id) => {
+  try {
+    const res = ApiHeader.post(
+      '/api/question/getAnswers', { id: id }, authHeader()
+    );
+    const data = (await res).data
+    return dispatch(initiateQuestion(data));
+  } catch (error) {
+    console.log("Error fetching data:", error);
+  }
+};
+export const createAnswer = async (dispatch, content, email, id) => {
+  try {
+    const res = ApiHeader.post(
+      '/api/question/addAnswers', { answer: content, email: email, id: id }, authHeader()
+    );
+    const data = (await res).data
+    return toast.success(data);
   } catch (error) {
     console.log("Error fetching data:", error);
   }

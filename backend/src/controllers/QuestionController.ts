@@ -30,9 +30,28 @@ class QuestionController {
     static getQuestions = async (req: Request, res: Response, next: NextFunction) => {
         let ques;
         const questions = await Question.find();
-        console.log("questions", questions)
         if (!questions) res.status(300).type('json').send("question is not found");
         res.status(200).type('json').send(questions);
+    };
+    static addAnswers = async (req: Request, res: Response, next: NextFunction) => {
+        let ques;
+        const { answer, email, id } = req.body;
+        console.log("dfdfdfd", answer, email);
+        const filter = { id: id }; // Modify as needed
+        const update = {
+            $push: {
+                'content': {
+                    'answer': answer,
+                    'email': email
+                }
+            }
+        };
+        const result = Question.find({ id: id }).updateOne([{ $set: { content: { answer: answer, email: email } } }])
+        // Perform the update operation
+        // const result = await Question.updateOne(filter, update);
+        console.log("result", result)
+        if (!result) res.status(300).type('json').send("failed");
+        res.status(200).type('json').send("sucess");
     };
 }
 

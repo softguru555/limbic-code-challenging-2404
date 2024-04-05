@@ -4,6 +4,10 @@ import bcrypt from 'bcrypt';
 
 export interface IQuestion {
     question: string;
+    contents: [{
+        answer: string
+        email: string
+    }],
     email: string;
 }
 
@@ -13,6 +17,10 @@ interface questionModelInterface extends mongoose.Model<QuestionDoc> {
 
 interface QuestionDoc extends mongoose.Document {
     username: string;
+    contents: [{
+        answer: string
+        email: string
+    }],
     email: string;
 }
 
@@ -34,6 +42,9 @@ const questionSchema = new mongoose.Schema<IQuestion>(
                 message: 'Username already in use.'
             }
         },
+        contents: [{
+            type: Object
+        }],
         email: {
             type: String,
             required: true,

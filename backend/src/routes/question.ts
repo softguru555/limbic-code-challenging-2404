@@ -7,10 +7,10 @@ import { checkJwt } from '../middleware/checkJwt';
 import { checkRole } from '../middleware/checkRole';
 
 const router = Router();
-
+// [checkJwt, checkRole(['USER', 'ADMIN'])]
 
 router.post('/addQuestion', asyncHandler(QuestionController.addQuestion));
 router.get('/getQuestions', asyncHandler(QuestionController.getQuestions));
-
+router.post('/addAnswers', asyncHandler(QuestionController.addAnswers))
 
 export default router;
