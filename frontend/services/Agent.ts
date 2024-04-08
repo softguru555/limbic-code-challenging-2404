@@ -20,6 +20,7 @@ export const getAgent = async (dispatch) => {
 export const deleteAgent = async (dispatch: any, id: any) => {
   try {
     const res = ApiHeader.delete(`/api/user/userDelete/${id}`, authHeader());
+    toast.success("Success")
     return dispatch(deleteUser(id));
 
   } catch (error) {
@@ -27,22 +28,3 @@ export const deleteAgent = async (dispatch: any, id: any) => {
     toast.error(error.response.data.message)
   }
 };
-
-// export const createStation = async (formData) => {
-//   try {
-//     const res = await fetch(
-//       `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/station/create`,
-//       {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify(formData),
-//       }
-//     );
-//     const data = res.json();
-//     return data;
-//   } catch (error) {
-//     console.log("error in register (service) => ", error);
-//   }
-// };

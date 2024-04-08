@@ -8,16 +8,9 @@ const TableFour: React.FC = () => {
     getAgent(dispatch);
   }, [dispatch]);
   const { user } = useSelector((state: any) => state.user);
-  const [id, setId] = useState('');
-  const [isDeleting, setDelAction] = useState(false);
   const [isEdition, setEdition] = useState(false);
-  const delUser = (e) => {
-    setId(e.target.name);
-    setDelAction(true);
-  }
-  if (isDeleting == true) {
+  const delUser = (id) => {
     deleteAgent(dispatch, id);
-    setDelAction(false);
   }
 
   return (
@@ -79,7 +72,7 @@ const TableFour: React.FC = () => {
               <div className="items-center justify-center p-2.5 sm:flex ">
                 <button
                   className="py-1 px-2 font-medium text-black hover:bg-primary hover:text-white  dark:text-white sm:py-3 sm:px-6"
-                  onClick={delUser}
+                  onClick={() => delUser(brand.id)}
                   name={brand.id}
                 >
                   delete

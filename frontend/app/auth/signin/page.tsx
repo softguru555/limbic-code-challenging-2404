@@ -37,6 +37,7 @@ const SignIn: React.FC = () => {
         }
       );
       const data = await res.json();
+      console.log("data", data)
       if (!data.user) {
         setIsLoading(false)
         toast.error(data.message)
