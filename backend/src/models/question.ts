@@ -4,7 +4,11 @@ import bcrypt from 'bcrypt';
 
 export interface IQuestion {
     question: string;
-    contents: [object],
+    contents: [{
+        _id: mongoose.Schema.Types.ObjectId,
+        email: String,
+        answer: String
+    }],
     email: string;
 }
 
@@ -14,7 +18,11 @@ interface questionModelInterface extends mongoose.Model<QuestionDoc> {
 
 interface QuestionDoc extends mongoose.Document {
     username: string;
-    contents: [object],
+    contents: [{
+        _id: mongoose.Schema.Types.ObjectId,
+        email: String,
+        answer: String
+    }],
     email: string;
 }
 
@@ -37,7 +45,11 @@ const questionSchema = new mongoose.Schema<IQuestion>(
             }
         },
         contents: {
-            type: [Object]
+            type: [{
+                _id: mongoose.Schema.Types.ObjectId,
+                email: String,
+                answer: String
+            }]
         },
         email: {
             type: String,

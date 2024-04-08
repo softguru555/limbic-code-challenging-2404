@@ -33,10 +33,12 @@ export const getQues = async (dispatch) => {
 };
 export const delQues = async (dispatch, id) => {
   try {
+    console.log("id", id)
     const res = ApiHeader.delete(
       `/api/question/delQuestion/${id}`, authHeader()
     );
     const data = (await res).data
+    if (data) toast.success("Success")
     return dispatch(deleteQuestion(data.id));
   } catch (error) {
     console.log("Error fetching data:", error);
@@ -55,11 +57,12 @@ export const getAnswers = async (dispatch, id) => {
 };
 export const createAnswer = async (dispatch, content, email, id) => {
   try {
+    // console.log("just wait", email); return;
+
     const res = await ApiHeader.post(
       '/api/question/addAnswers', { answer: content, email: email, id: id }, authHeader()
     );
     const data = (await res).data
-    console.log("just wait", res)
     return dispatch(initiateQuestion(data));
   } catch (error) {
     console.log("Error fetching data:", error);

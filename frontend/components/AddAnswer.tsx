@@ -19,7 +19,7 @@ const AddAnswer: React.FC<AddAnswer> = (props) => {
     if (formData != "") {
       createAnswer(dispatch, formData, auth.email, props.id)
       setFormData("")
-      router.push(`/main/${props.id}`)
+      // router.push(`/main/${props.id}`)
 
     }
   }
@@ -56,23 +56,26 @@ const AddAnswer: React.FC<AddAnswer> = (props) => {
         <form onSubmit={addQuestion}>
           <div className="mb-5">
             <label
+              htmlFor="answer"
               className="mb-2.5 block font-medium text-black dark:text-white"
             >
-              Add Answer
+              Answer
             </label>
-            <input
-              type="text"
+            <textarea
+              cols={30}
+              rows={7}
+              placeholder="Enter Answer"
+              className="w-full rounded-sm border border-stroke bg-white py-3 px-4.5 focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-boxdark dark:focus:border-primary"
               value={formData}
               onChange={handleChange}
-              placeholder="Enter task title"
-              className="w-full rounded-sm border border-stroke bg-white py-3 px-4.5 focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-boxdark dark:focus:border-primary"
-            />
+            ></textarea>
+            <button
+              className="flex w-full items-center justify-center gap-2 rounded bg-primary py-2.5 px-4.5 font-medium text-white"
+            >
+              Add
+            </button>
           </div>
-          <button
-            className="flex w-full items-center justify-center gap-2 rounded bg-primary py-2.5 px-4.5 font-medium text-white"
-          >
-            Add
-          </button>
+
         </form>
       </div>
     </div>

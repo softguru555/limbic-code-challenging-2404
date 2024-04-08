@@ -49,7 +49,7 @@ const AddQuestion: React.FC<AddQuestion> = (props) => {
         </button>
 
         <form onSubmit={addQuestion}>
-          <div className="mb-5">
+          {/* <div className="mb-5">
             <label
               className="mb-2.5 block font-medium text-black dark:text-white"
             >
@@ -62,12 +62,29 @@ const AddQuestion: React.FC<AddQuestion> = (props) => {
               placeholder="Enter task title"
               className="w-full rounded-sm border border-stroke bg-white py-3 px-4.5 focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-boxdark dark:focus:border-primary"
             />
+          </div> */}
+          <div className="mb-5">
+            <label
+              htmlFor="question"
+              className="mb-2.5 block font-medium text-black dark:text-white"
+            >
+              Question
+            </label>
+            <textarea
+              cols={30}
+              rows={7}
+              placeholder="Enter Question"
+              className="w-full rounded-sm border border-stroke bg-white py-3 px-4.5 focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-boxdark dark:focus:border-primary"
+              value={formData}
+              onChange={handleChange}
+            ></textarea>
+            <button
+              className="flex w-full items-center justify-center gap-2 rounded bg-primary py-2.5 px-4.5 font-medium text-white"
+            >
+              Add question
+            </button>
           </div>
-          <button
-            className="flex w-full items-center justify-center gap-2 rounded bg-primary py-2.5 px-4.5 font-medium text-white"
-          >
-            Add question
-          </button>
+
         </form>
       </div>
     </div>
