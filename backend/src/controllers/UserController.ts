@@ -110,13 +110,11 @@ class UserController {
     };
 
     static deleteUser = async (req: Request, res: Response, next: NextFunction) => {
-
         const id = req.params.id;
         const user = await User.findById(id);
         if (!user) throw new NotFoundError(`User with ID ${id} not found`);
 
         await user.delete();
-        console.log("success, user", user)
         return res.status(204).type('json').send(user);
     };
 }

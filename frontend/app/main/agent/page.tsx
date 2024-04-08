@@ -6,14 +6,14 @@ import { getAgent } from "@/services/Agent";
 import { useDispatch, useSelector } from "react-redux";
 
 const Agent: React.FC = () => {
- 
+
   return (
     <>
       <div className="mt-7.5">
         <TableFour />
       </div>
     </>
-  );  
+  );
 };
 
 export default Agent;

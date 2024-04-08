@@ -1,11 +1,11 @@
-import mongoose from 'mongoose';
+import mongoose, { ObjectId } from 'mongoose';
 import bcrypt from 'bcrypt';
 // import { ROLES } from '../utils/constants';
 
 export interface IQuestion {
     question: string;
-    contents: [object],
     email: string;
+    connect_id: ObjectId;
 }
 
 interface questionModelInterface extends mongoose.Model<QuestionDoc> {
@@ -14,7 +14,6 @@ interface questionModelInterface extends mongoose.Model<QuestionDoc> {
 
 interface QuestionDoc extends mongoose.Document {
     username: string;
-    contents: [object],
     email: string;
 }
 
@@ -35,9 +34,6 @@ const questionSchema = new mongoose.Schema<IQuestion>(
                 },
                 message: 'Username already in use.'
             }
-        },
-        contents: {
-            type: [Object]
         },
         email: {
             type: String,

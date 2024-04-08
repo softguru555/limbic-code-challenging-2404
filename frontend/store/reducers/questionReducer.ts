@@ -14,12 +14,12 @@ const questionReducer = (state = initialState, action) => {
     case UPDATEQUESTION:
       return {
         ...state,
-        questions: [...state.questions].map(question => question._id === action.payload._id ? action.payload : question)
+        questions: [...state.questions].map(question => question.id === action.payload.id ? action.payload : question)
       };
     case DELETEQUESTION:
       return {
         ...state,
-        questions: state.questions.filter(question => question._id !== action.payload)
+        questions: state.questions.filter(question => question.id !== action.payload)
       }
     default:
       return state;

@@ -1,17 +1,17 @@
 
 import { INITIATEQUESTION, UPDATEQUESTION, DELETEQUESTION } from './types';
 
-export const initiateQuestion = (question) => ({
+export const initiateQuestion = (questions) => ({
   type: INITIATEQUESTION,
-  payload: question,
+  payload: questions,
 });
 
-export const updateQuestion = (question) => ({
+export const updateQuestion = (questions) => ({
   type: UPDATEQUESTION,
-  payload: question,
+  payload: questions,
 });
 
-export const deleteQuestion = (_id) => ({
+export const deleteQuestion = (id) => ({
   type: DELETEQUESTION,
-  payload: _id,
+  payload: id,
 });

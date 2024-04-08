@@ -36,22 +36,50 @@ class QuestionController {
     static addAnswers = async (req: Request, res: Response, next: NextFunction) => {
         let ques;
         const { answer, email, id } = req.body;
-        console.log("dfdfdfd", answer, email);
-        const filter = { id: id }; // Modify as needed
-        const update = {
-            $push: {
-                'content': {
-                    'answer': answer,
-                    'email': email
-                }
-            }
-        };
-        const result = Question.find({ id: id }).updateOne([{ $set: { content: { answer: answer, email: email } } }])
-        // Perform the update operation
-        // const result = await Question.updateOne(filter, update);
-        console.log("result", result)
-        if (!result) res.status(300).type('json').send("failed");
-        res.status(200).type('json').send("sucess");
+        try {
+            const result = await Question.updateOne(
+                { id: id },
+                { $push: { contents: { answer: answer, email: email } } }
+            );
+            const data = await Question.find();
+            console.log(`$ document(s) updated.`, data);
+
+            return res.status(200).type('json').send(data)
+        } catch (e) {
+            // console.error('Error updating document:', error);
+            const error = e as Error.ValidationError;
+
+            throw new ClientError(processErrors(error));
+        }
+
+    };
+
+    static delQuestion = async (req: Request, res: Response, next: NextFunction) => {
+        const id = req.params.id;
+        const data = await Question.findById(id);
+        if (!data) throw new NotFoundError(`User with ID ${id} not found`);
+
+        await data.delete();
+        return res.status(200).type('json').send(data);
+    };
+    static delAnswer = async (req: Request, res: Response, next: NextFunction) => {
+        const { questionId, answer } = req.body;
+        try {
+            const result = await Question.updateOne(
+                { id: questionId },
+                { $pull: { contents: { answer: answer } } }
+            );
+            console.log("queuedfssssssssssssssssssssssssssss", result); return;
+        } catch (err) {
+            console.log("err", err)
+        }
+
+
+        // const data = await Question.findById(id);
+        // if (!data) throw new NotFoundError(`User with ID ${id} not found`);
+
+        // await data.delete();
+        // return res.status(200).type('json').send(data);
     };
 }
 

@@ -8,7 +8,6 @@ import { loginSuccess } from "@/store/actions/authAction";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import { useRouter } from 'next/navigation'
 import { constants } from "@/app/constants";
-import Loader from "@/components/common/Loader";
 // export const dynamic = 'force-dynamic';
 
 const SignIn: React.FC = () => {
@@ -43,7 +42,7 @@ const SignIn: React.FC = () => {
         toast.error(data.message)
         return
       }
-      
+
       dispatch(loginSuccess(data.user));
       setToken(data.token);
       window.sessionStorage.setItem("token", data.token);
@@ -103,7 +102,7 @@ const SignIn: React.FC = () => {
             <div className="w-full p-4 sm:p-12.5">
               <span className="mb-1.5 block font-medium">Start for free</span>
               <h2 className="mb-9 font-bold text-black  sm:text-title-xl2 py-2">
-                Sign In 
+                Sign In
               </h2>
 
               <form onSubmit={handleSubmit}>
@@ -119,7 +118,7 @@ const SignIn: React.FC = () => {
                       name="email"
                       value={formData.email}
                       onChange={handleChange}
-                   />
+                    />
 
                     <span className="absolute right-4 top-4">
                       <svg

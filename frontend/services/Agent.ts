@@ -20,7 +20,6 @@ export const getAgent = async (dispatch) => {
 export const deleteAgent = async (dispatch: any, id: any) => {
   try {
     const res = ApiHeader.delete(`/api/user/userDelete/${id}`, authHeader());
-    console.log("id", id);
     return dispatch(deleteUser(id));
 
   } catch (error) {

@@ -9,10 +9,8 @@ import { toast } from "react-toastify";
 
 
 export const addQues = async (dispatch: any, message: any, email: any) => {
-  console.log("message", message);
   try {
     const res = ApiHeader.post('/api/question/addQuestion', { question: message, email: email }, authHeader());
-    console.log("res", res);
     return toast.success("success")
     // return dispatch(initiateUser(data));
     // return dispatch(deleteUser(id));
@@ -33,6 +31,17 @@ export const getQues = async (dispatch) => {
     console.log("Error fetching data:", error);
   }
 };
+export const delQues = async (dispatch, id) => {
+  try {
+    const res = ApiHeader.delete(
+      `/api/question/delQuestion/${id}`, authHeader()
+    );
+    const data = (await res).data
+    return dispatch(deleteQuestion(data.id));
+  } catch (error) {
+    console.log("Error fetching data:", error);
+  }
+};
 export const getAnswers = async (dispatch, id) => {
   try {
     const res = ApiHeader.post(
@@ -46,11 +55,24 @@ export const getAnswers = async (dispatch, id) => {
 };
 export const createAnswer = async (dispatch, content, email, id) => {
   try {
-    const res = ApiHeader.post(
+    const res = await ApiHeader.post(
       '/api/question/addAnswers', { answer: content, email: email, id: id }, authHeader()
     );
     const data = (await res).data
-    return toast.success(data);
+    console.log("just wait", res)
+    return dispatch(initiateQuestion(data));
+  } catch (error) {
+    console.log("Error fetching data:", error);
+  }
+};
+
+export const delAsw = async (dispatch, id, delanswer) => {
+  try {
+    const res = ApiHeader.post(
+      "/api/question/delAnswer", { questionId: id, answer: delanswer }, authHeader()
+    );
+    const data = (await res).data
+    return dispatch(deleteQuestion(data.id));
   } catch (error) {
     console.log("Error fetching data:", error);
   }
