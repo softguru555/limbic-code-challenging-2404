@@ -38,7 +38,7 @@ class QuestionController {
         const { answer, email, id } = req.body;
         try {
             const result = await Question.updateOne(
-                { id: id },
+                { _id: id },
                 { $push: { contents: { answer: answer, email: email } } }
             );
             const data = await Question.find();
