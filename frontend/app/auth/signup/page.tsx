@@ -1,5 +1,5 @@
 "use client"
-import React, {useState} from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
@@ -8,13 +8,13 @@ import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 
 const SignUp: React.FC = () => {
-  const [formData, setFormData] = useState({ email: '', password:'', name: '' })
+  const [formData, setFormData] = useState({ email: '', password: '', name: '' })
   const router = useRouter();
-  const handleChange = async(e) => {
+  const handleChange = async (e) => {
     const { name, value } = e.target;
-    setFormData({...formData, [name]: value});
+    setFormData({ ...formData, [name]: value });
   }
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const res = fetch(
       `${constants.BASE_URL}/api/auth/signup`,
@@ -27,8 +27,8 @@ const SignUp: React.FC = () => {
       }
     );
 
-    if((await res).status == 200){
-    toast.success('Signup Success');
+    if ((await res).status == 200) {
+      toast.success('Signup Success');
 
       router.push('./signin');
     }
@@ -62,7 +62,6 @@ const SignUp: React.FC = () => {
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit
                 suspendisse.
               </p>
-
               <span className="mt-15 inline-block">
                 <svg
                   width="350"
@@ -100,7 +99,7 @@ const SignUp: React.FC = () => {
                       name="name"
                       value={formData.name}
                       onChange={handleChange}
-                   />
+                    />
 
                     <span className="absolute right-4 top-4">
                       <svg

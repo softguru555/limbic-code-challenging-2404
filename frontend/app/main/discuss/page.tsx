@@ -4,27 +4,19 @@ import AddQuestion from "@/components/AddQuestion";
 import { useState, useEffect } from "react";
 import { getQues, createAnswer } from "@/services/Question";
 import { useDispatch, useSelector } from "react-redux";
-import { toast } from "react-toastify";
-import { delQues } from "@/services/Question";
-import { useRouter } from "next/navigation";
 import AccordionItemOne from "@/components/AccordionItemOne"
+
 const Discuss: React.FC = () => {
-  const [creation, setCreation] = useState(false);
-  const auth = useSelector((state: any) => state.auth)
   const { questions } = useSelector((state: any) => state.question)
   console.log("questions", questions);
   const dispatch = useDispatch();
-  const router = useRouter();
+  //get all questions
   const [popupOpen, setPopupOpen] = useState(false)
   useEffect(() => {
     getQues(dispatch);
   }, [dispatch]);
-  // const showAnswers = (id) => {
-  //   router.push(`/main/${id}`)
-  // }
-
+  //show Answers
   const [active, setActive] = useState<string | null>(null);
-
   const handleToggle = (index: string) => {
     if (active === index) {
       setActive(null);

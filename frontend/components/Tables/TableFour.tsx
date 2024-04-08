@@ -1,10 +1,6 @@
-import { BRAND } from "@/types/brand";
-import Image from "next/image";
-import DropdownDefault from "../Dropdowns/DropdownDefault";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getAgent, deleteAgent } from "@/services/Agent";
 import { useDispatch, useSelector } from "react-redux";
-
 
 const TableFour: React.FC = () => {
   const dispatch = useDispatch();
@@ -20,15 +16,10 @@ const TableFour: React.FC = () => {
     setDelAction(true);
   }
   if (isDeleting == true) {
-    const data = deleteAgent(dispatch, id);
+    deleteAgent(dispatch, id);
     setDelAction(false);
   }
-  // useEffect(() => {
-  //   if(id != ''){
-  //     deleteAgent({dispatch, id});
-  //     setDelAction(false);
-  //   }
-  // }, [isDeleting]);
+
   return (
     <div className="col-span-12 xl:col-span-7">
       <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
@@ -38,7 +29,6 @@ const TableFour: React.FC = () => {
               Users
             </h4>
           </div>
-          <DropdownDefault />
         </div>
 
         <div className="flex flex-col">
@@ -96,7 +86,6 @@ const TableFour: React.FC = () => {
                 </button>
                 <button
                   className="py-1 px-2 font-medium text-black hover:bg-primary hover:text-white  dark:text-white sm:py-3 sm:px-6"
-
                 >
                   edit
                 </button>

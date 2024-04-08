@@ -56,6 +56,7 @@ class UserController {
 
         res.status(200).type('json').send(user);
     };
+
     static newUser = async (req: Request, res: Response, next: NextFunction) => {
         let { username, password } = req.body;
         let user;

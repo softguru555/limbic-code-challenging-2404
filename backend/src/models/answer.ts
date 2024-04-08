@@ -42,11 +42,8 @@ const questionSchema = new mongoose.Schema<IQuestion>(
             maxLength: [120, 'email too long']
         }
     },
-    // Created at and updated at timestamps
     { timestamps: true }
 );
-
-
 
 questionSchema.statics.build = (attr: IQuestion) => {
     return new Question(attr);
@@ -62,7 +59,5 @@ questionSchema.set('toJSON', {
         delete returnedObject.updatedAt;
     }
 });
-
 const Question = mongoose.model<QuestionDoc, questionModelInterface>('Question', questionSchema);
-
 export { Question };
