@@ -2,62 +2,55 @@ import mongoose, { ObjectId } from 'mongoose';
 import bcrypt from 'bcrypt';
 // import { ROLES } from '../utils/constants';
 
-export interface IQuestion {
-    question: string;
+export interface IAnswer {
+    answer: string;
     email: string;
-    connect_id: ObjectId;
+    question_id: mongoose.Schema.Types.ObjectId;
 }
 
-interface questionModelInterface extends mongoose.Model<QuestionDoc> {
-    build(attr: IQuestion): QuestionDoc;
+interface answerModelInterface extends mongoose.Model<AnswerDoc> {
+    build(attr: IAnswer): AnswerDoc;
 }
 
-interface QuestionDoc extends mongoose.Document {
-    username: string;
+interface AnswerDoc extends mongoose.Document {
+    answer: string;
     email: string;
+    question_id: mongoose.Schema.Types.ObjectId;
 }
 
-const questionSchema = new mongoose.Schema<IQuestion>(
+const answerSchema = new mongoose.Schema<IAnswer>(
     {
-        question: {
+        answer: {
             type: String,
             required: true,
             unique: true,
             trim: true,
             lowercase: true,
-            validate: {
-                validator: async function (v: string): Promise<boolean> {
-                    let doc: any = await Question.findOne({ question: v });
-                    // @ts-ignore
-                    if (doc) return this._id.toString() === doc._id.toString();
-                    else return Boolean(!doc);
-                },
-                message: 'Username already in use.'
-            }
         },
         email: {
             type: String,
             required: true,
-            minLength: [3, 'email too short'],
-            maxLength: [120, 'email too long']
+        },
+        question_id: {
+            type: mongoose.Schema.Types.ObjectId,
+            required: true,
         }
     },
     { timestamps: true }
 );
 
-questionSchema.statics.build = (attr: IQuestion) => {
-    return new Question(attr);
+answerSchema.statics.build = (attr: IAnswer) => {
+    return new Answer(attr);
 };
 
-questionSchema.set('toJSON', {
+answerSchema.set('toJSON', {
     transform: (document, returnedObject) => {
         returnedObject.id = returnedObject._id.toString();
         delete returnedObject._id;
         delete returnedObject.__v;
-        delete returnedObject.password;
         delete returnedObject.createdAt;
         delete returnedObject.updatedAt;
     }
 });
-const Question = mongoose.model<QuestionDoc, questionModelInterface>('Question', questionSchema);
-export { Question };
+const Answer = mongoose.model<AnswerDoc, answerModelInterface>('Answer', answerSchema);
+export { Answer };

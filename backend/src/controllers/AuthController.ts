@@ -45,17 +45,12 @@ class AuthController {
     };
 
     static changePassword = async (req: Request, res: Response, next: NextFunction) => {
-        const id = res.locals.jwtPayload.userId;
-        const { oldPassword, newPassword } = req.body;
-        if (!(oldPassword && newPassword)) throw new ClientError("Passwords don't match");
+        const { id, password } = req.body;
         const user = await User.findById(id);
         if (!user) {
             throw new NotFoundError(`User with ID ${id} not found`);
-        } else if (!(await user.isPasswordCorrect(oldPassword))) {
-            throw new UnauthorizedError("Old password doesn't match");
         }
-        user.password = newPassword;
-
+        user.password = password;
         try {
             await user.save();
         } catch (e) {
@@ -63,7 +58,7 @@ class AuthController {
             const error = e as Error.ValidationError;
             throw new ClientError(processErrors(error));
         }
-        res.status(204).send();
+        res.status(200).send(user);
     };
 }
 export default AuthController;

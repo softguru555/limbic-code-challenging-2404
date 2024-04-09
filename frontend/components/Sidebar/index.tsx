@@ -13,8 +13,6 @@ interface SidebarProps {
 const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const pathname = usePathname();
   const auth = useSelector((state: any) => state.auth);
-  console.log("auth", auth)
-
   const trigger = useRef<any>(null);
   const sidebar = useRef<any>(null);
 

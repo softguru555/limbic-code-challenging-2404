@@ -20,7 +20,8 @@ export const addQues = async (dispatch: any, message: any, email: any) => {
     toast.error(error.response.data.message)
   }
 };
-export const getQues = async (dispatch) => {
+
+export const getQues = async (dispatch: any) => {
   try {
     const res = ApiHeader.get(
       '/api/question/getQuestions', authHeader()
@@ -31,7 +32,8 @@ export const getQues = async (dispatch) => {
     console.log("Error fetching data:", error);
   }
 };
-export const delQues = async (dispatch, id) => {
+
+export const delQues = async (dispatch: any, id: any) => {
   try {
     console.log("id", id)
     const res = ApiHeader.delete(
@@ -44,7 +46,8 @@ export const delQues = async (dispatch, id) => {
     console.log("Error fetching data:", error);
   }
 };
-export const getAnswers = async (dispatch, id) => {
+
+export const getAnswers = async (dispatch: any, id: any) => {
   try {
     const res = ApiHeader.post(
       '/api/question/getAnswers', { id: id }, authHeader()
@@ -55,10 +58,9 @@ export const getAnswers = async (dispatch, id) => {
     console.log("Error fetching data:", error);
   }
 };
-export const createAnswer = async (dispatch, content, email, id) => {
-  try {
-    // console.log("just wait", email); return;
 
+export const createAnswer = async (dispatch: any, content: any, email: any, id: any) => {
+  try {
     const res = await ApiHeader.post(
       '/api/question/addAnswers', { answer: content, email: email, id: id }, authHeader()
     );
@@ -69,13 +71,38 @@ export const createAnswer = async (dispatch, content, email, id) => {
   }
 };
 
-export const delAsw = async (dispatch, id, delanswer) => {
+export const editQues = async (dispatch: any, content: any, id: any) => {
   try {
-    const res = ApiHeader.post(
-      "/api/question/delAnswer", { questionId: id, answer: delanswer }, authHeader()
+    const res = await ApiHeader.post(
+      '/api/question/editQuestion', { question: content, id: id }, authHeader()
     );
     const data = (await res).data
-    return dispatch(deleteQuestion(data.id));
+    return dispatch(initiateQuestion(data));
+  } catch (error) {
+    console.log("Error fetching data:", error);
+  }
+};
+
+export const delAsw = async (dispatch: any, id: any) => {
+  try {
+    const res = ApiHeader.post(
+      "/api/question/delAnswer", { id: id }, authHeader()
+    );
+    const data = (await res).data
+    toast.success("Success")
+    return dispatch(initiateQuestion(data));
+  } catch (error) {
+    console.log("Error fetching data:", error);
+  }
+};
+export const editAsw = async (dispatch: any, content: any, id: any) => {
+  try {
+    const res = await ApiHeader.post(
+      '/api/question/editAnswer', { answer: content, id: id }, authHeader()
+    );
+    const data = (await res).data
+    toast.success("Success")
+    return dispatch(initiateQuestion(data));
   } catch (error) {
     console.log("Error fetching data:", error);
   }

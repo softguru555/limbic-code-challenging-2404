@@ -6,8 +6,25 @@ import { CustomRequest } from '../middleware/checkJwt';
 import { Question, IQuestion } from '../models/question';
 import { ROLES } from '../utils/constants';
 import { processErrors } from '../utils/errorProcessing';
+import { Answer, IAnswer } from '../models/answer';
 
 class QuestionController {
+
+    static getQuestions = async (req: Request, res: Response, next: NextFunction) => {
+        const data = await Question.aggregate([
+            {
+                $lookup:
+                {
+                    from: "answers",
+                    localField: "_id",
+                    foreignField: "question_id",
+                    as: "answers"
+                }
+            }
+        ])
+        res.status(200).type('json').send(data);
+    };
+
     static addQuestion = async (req: Request, res: Response, next: NextFunction) => {
         let { question, email } = req.body;
         let ques;
@@ -22,28 +39,30 @@ class QuestionController {
         }
     };
 
-    static getQuestions = async (req: Request, res: Response, next: NextFunction) => {
-        const questions = await Question.find();
-        if (!questions) res.status(300).type('json').send("question is not found");
-        res.status(200).type('json').send(questions);
-    };
-
-    static addAnswers = async (req: Request, res: Response, next: NextFunction) => {
-        let ques;
-        const { answer, email, id } = req.body;
+    static editQuestion = async (req: Request, res: Response, next: NextFunction) => {
+        let { question, id } = req.body;
         try {
-            const result = await Question.updateOne(
-                { _id: id },
-                { $push: { contents: { answer: answer, email: email } } }
-            );
-            const data = await Question.find();
-            console.log(`$ document(s) updated.`, data);
-            return res.status(200).type('json').send(data)
-        } catch (e) {
+            await Question.find({ _id: id })
+                .updateOne({ question: question })
+            const data = await Question.aggregate([
+                {
+                    $lookup:
+                    {
+                        from: "answers",
+                        localField: "_id",
+                        foreignField: "question_id",
+                        as: "answers"
+                    }
+                }
+            ])
+            return res.status(200).send(data);
+        } catch (e: any) {
+            console.error(e);
             const error = e as Error.ValidationError;
             throw new ClientError(processErrors(error));
         }
     };
+
 
     static delQuestion = async (req: Request, res: Response, next: NextFunction) => {
         const id = req.params.id;
@@ -53,14 +72,60 @@ class QuestionController {
         return res.status(200).type('json').send(data);
     };
 
-    static delAnswer = async (req: Request, res: Response, next: NextFunction) => {
-        const { questionId, answer } = req.body;
+    static addAnswers = async (req: Request, res: Response, next: NextFunction) => {
+        let ques;
+        const { answer, email, id } = req.body;
+        var answers = new Answer({
+            answer: answer,
+            email: email,
+            question_id: id
+        })
+
+        await answers.save();
+        const data = await Answer.find()
+        res.status(200).type('json').send(data);
+    };
+
+    static editAnswer = async (req: Request, res: Response, next: NextFunction) => {
+        let { answer, id } = req.body;
         try {
-            const result = await Question.updateOne(
-                { _id: questionId },
-                { $pull: { contents: { answer: answer } } }
-            );
-            console.log("queuedfssssssssssssssssssssssssssss", result); return;
+            await Answer.find({ _id: id })
+                .updateOne({ answer: answer })
+            const data = await Question.aggregate([
+                {
+                    $lookup:
+                    {
+                        from: "answers",
+                        localField: "_id",
+                        foreignField: "question_id",
+                        as: "answers"
+                    }
+                }
+            ])
+            return res.status(200).send(data);
+        } catch (e: any) {
+            console.error(e);
+            const error = e as Error.ValidationError;
+            throw new ClientError(processErrors(error));
+        }
+    };
+
+    static delAnswer = async (req: Request, res: Response, next: NextFunction) => {
+        const { id } = req.body;
+        try {
+            const result = await Answer.deleteOne({ _id: id });
+            const data = await Question.aggregate([
+                {
+                    $lookup:
+                    {
+                        from: "answers",
+                        localField: "_id",
+                        foreignField: "question_id",
+                        as: "answers"
+                    }
+                }
+            ])
+            return res.status(200).send(data);
         } catch (err) {
             console.log("err", err)
         }

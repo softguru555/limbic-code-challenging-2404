@@ -1,33 +1,39 @@
 import React, { useState, useEffect } from 'react';
-import { addQues } from '@/services/Question';
+import { createAnswer, editQues } from '@/services/Question';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
+import { useRouter } from 'next/navigation';
 
-interface AddQuestion {
-  popupOpen: boolean;
-  setPopupOpen: (open: boolean) => void;
+interface EditQuestion {
+  editable: boolean;
+  setEditable: (open: boolean) => void;
+  question: string;
+  id: string
 }
-const AddQuestion: React.FC<AddQuestion> = (props) => {
+
+const EditQuestion: React.FC<EditQuestion> = (props) => {
   const auth = useSelector((state: any) => state.auth)
-  const [formData, setFormData] = useState("")
+  const data = props.question;
+  const [editData, setEditData] = useState(data)
   const dispatch = useDispatch();
-  const addQuestion = () => {
-    if (formData != "") {
-      addQues(dispatch, formData, auth.email)
-      setFormData("")
-    }
+  const EditQuestion = () => {
+    editQues(dispatch, editData, props.id)
   }
   const handleChange = (e) => {
-    setFormData(e.target.value);
+    setEditData(e.target.value);
+  }
+  const cancel = () => {
+    props.setEditable(false);
+    setEditData(data)
   }
   return (
     <div
-      className={`fixed top-0 left-0 z-99999 flex h-screen w-full justify-center overflow-y-scroll bg-black/80 py-5 px-4 ${props.popupOpen === true ? 'block' : 'hidden'
+      className={`fixed top-0 left-0 z-99999 flex h-screen w-full justify-center overflow-y-scroll bg-black/80 py-5 px-4 ${props.editable === true ? 'block' : 'hidden'
         }`}
     >
       <div className="relative mt-20 m-auto w-full max-w-180 rounded-sm border border-stroke bg-gray p-4 shadow-default dark:border-strokedark dark:bg-meta-4 sm:p-8 xl:p-10">
         <button
-          onClick={() => props.setPopupOpen(false)}
+          onClick={cancel}
           className="absolute right-1 top-1 sm:right-5 sm:top-5"
         >
           <svg
@@ -47,10 +53,10 @@ const AddQuestion: React.FC<AddQuestion> = (props) => {
           </svg>
         </button>
 
-        <form onSubmit={addQuestion}>
+        <form onSubmit={EditQuestion}>
           <div className="mb-5">
             <label
-              htmlFor="question"
+              htmlFor="Question"
               className="mb-2.5 block font-medium text-black dark:text-white"
             >
               Question
@@ -58,15 +64,15 @@ const AddQuestion: React.FC<AddQuestion> = (props) => {
             <textarea
               cols={30}
               rows={7}
-              placeholder="Enter Question"
+              placeholder="Edit Question"
               className="w-full rounded-sm border border-stroke bg-white py-3 px-4.5 focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-boxdark dark:focus:border-primary"
-              value={formData}
+              value={editData}
               onChange={handleChange}
             ></textarea>
             <button
               className="flex w-full items-center justify-center gap-2 rounded bg-primary py-2.5 px-4.5 font-medium text-white"
             >
-              Add question
+              Edit
             </button>
           </div>
 
@@ -76,4 +82,4 @@ const AddQuestion: React.FC<AddQuestion> = (props) => {
   );
 };
 
-export default AddQuestion;
+export default EditQuestion;

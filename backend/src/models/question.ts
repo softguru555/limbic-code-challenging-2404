@@ -4,11 +4,11 @@ import bcrypt from 'bcrypt';
 
 export interface IQuestion {
     question: string;
-    contents: [{
-        _id: mongoose.Schema.Types.ObjectId,
-        email: String,
-        answer: String
-    }],
+    // contents: [{
+    //     _id: mongoose.Schema.Types.ObjectId,
+    //     email: String,
+    //     answer: String
+    // }],
     email: string;
 }
 
@@ -18,11 +18,11 @@ interface questionModelInterface extends mongoose.Model<QuestionDoc> {
 
 interface QuestionDoc extends mongoose.Document {
     username: string;
-    contents: [{
-        _id: mongoose.Schema.Types.ObjectId,
-        email: String,
-        answer: String
-    }],
+    // contents: [{
+    //     _id: mongoose.Schema.Types.ObjectId,
+    //     email: String,
+    //     answer: String
+    // }],
     email: string;
 }
 
@@ -44,13 +44,13 @@ const questionSchema = new mongoose.Schema<IQuestion>(
                 message: 'Username already in use.'
             }
         },
-        contents: {
-            type: [{
-                _id: mongoose.Schema.Types.ObjectId,
-                email: String,
-                answer: String
-            }]
-        },
+        // contents: {
+        //     type: [{
+        //         _id: mongoose.Schema.Types.ObjectId,
+        //         email: String,
+        //         answer: String
+        //     }]
+        // },   
         email: {
             type: String,
             required: true,

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { initiateUser, deleteUser } from "@/store/actions/userAction";
+import { initiateUser, deleteUser, updateUser } from "@/store/actions/userAction";
 import { constants } from "@/app/constants";
 import { headers } from "next/dist/client/components/headers";
 import { ApiHeader } from "@/app/apiConstants";
@@ -22,6 +22,17 @@ export const deleteAgent = async (dispatch: any, id: any) => {
     const res = ApiHeader.delete(`/api/user/userDelete/${id}`, authHeader());
     toast.success("Success")
     return dispatch(deleteUser(id));
+
+  } catch (error) {
+    console.log("error in update (service) => ", error.response.data);
+    toast.error(error.response.data.message)
+  }
+};
+export const resetPassword = async (dispatch: any, id: any, password: any) => {
+  try {
+    const user = ApiHeader.post(`/api/auth/change-password`, { id: id, password: password }, authHeader());
+    toast.success("Sucess")
+    return dispatch(updateUser((await user).data));
 
   } catch (error) {
     console.log("error in update (service) => ", error.response.data);

@@ -3,6 +3,7 @@ import { createAnswer } from '@/services/Question';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/navigation';
+
 interface AddAnswer {
   visible: boolean;
   setVisible: (open: boolean) => void;
@@ -11,16 +12,12 @@ interface AddAnswer {
 
 const AddAnswer: React.FC<AddAnswer> = (props) => {
   const auth = useSelector((state: any) => state.auth)
-  const router = useRouter();
-  console.log("props", props)
   const [formData, setFormData] = useState("")
   const dispatch = useDispatch();
   const addQuestion = () => {
     if (formData != "") {
       createAnswer(dispatch, formData, auth.email, props.id)
       setFormData("")
-      // router.push(`/main/${props.id}`)
-
     }
   }
   const handleChange = (e) => {

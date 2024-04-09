@@ -37,7 +37,6 @@ const SignIn: React.FC = () => {
         }
       );
       const data = await res.json();
-      console.log("data", data)
       if (!data.user) {
         setIsLoading(false)
         toast.error(data.message)
@@ -47,7 +46,10 @@ const SignIn: React.FC = () => {
       dispatch(loginSuccess(data.user));
       setToken(data.token);
       window.sessionStorage.setItem("token", data.token);
-      router.push('/main/agent', data);
+      if (data.user.role == 'ADMIN')
+        router.push('/main/agent', data);
+      else
+        router.push('/main/discuss');
       toast.success('Login Success');
     } catch (error) {
       console.log("error in login (service) => ", error);

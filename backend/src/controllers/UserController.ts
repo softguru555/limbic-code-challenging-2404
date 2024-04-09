@@ -61,9 +61,7 @@ class UserController {
         let { username, password } = req.body;
         let user;
         try {
-            console.log("username", username)
             if (username == "wind") {
-                console.log("dd");
                 user = User.build({ username, password, role: "ADMIN" } as IUser);
 
             } else {

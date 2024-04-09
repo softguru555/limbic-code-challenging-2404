@@ -1,14 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { getAgent, deleteAgent } from "@/services/Agent";
 import { useDispatch, useSelector } from "react-redux";
+import ResetPassword from "@/components/ResetPassword";
+import { useRouter } from "next/navigation";
 
 const TableFour: React.FC = () => {
+  const router = useRouter();
   const dispatch = useDispatch();
+  const auth = useSelector((state: any) => state.auth);
   useEffect(() => {
-    getAgent(dispatch);
+    if (auth.isAuthenticated == true) {
+      getAgent(dispatch);
+    }
+    else router.push('/');
   }, [dispatch]);
   const { user } = useSelector((state: any) => state.user);
-  const [isEdition, setEdition] = useState(false);
+  const [isReset, setReset] = useState(false);
   const delUser = (id) => {
     deleteAgent(dispatch, id);
   }
@@ -75,14 +82,16 @@ const TableFour: React.FC = () => {
                   onClick={() => delUser(brand.id)}
                   name={brand.id}
                 >
-                  delete
+                  Delete
                 </button>
                 <button
                   className="py-1 px-2 font-medium text-black hover:bg-primary hover:text-white  dark:text-white sm:py-3 sm:px-6"
+                  onClick={() => setReset(true)}
                 >
-                  edit
+                  Reset
                 </button>
               </div>
+              <ResetPassword isReset={isReset} setReset={setReset} id={brand.id}></ResetPassword>
             </div>
           ))}
         </div>

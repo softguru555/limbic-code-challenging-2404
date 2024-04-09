@@ -11,7 +11,7 @@ export const updateQuestion = (questions) => ({
   payload: questions,
 });
 
-export const deleteQuestion = (id) => ({
+export const deleteQuestion = (_id) => ({
   type: DELETEQUESTION,
-  payload: id,
+  payload: _id,
 });

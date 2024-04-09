@@ -1,33 +1,40 @@
 import React, { useState, useEffect } from 'react';
-import { addQues } from '@/services/Question';
+import { createAnswer } from '@/services/Question';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-
-interface AddQuestion {
-  popupOpen: boolean;
-  setPopupOpen: (open: boolean) => void;
+import { useRouter } from 'next/navigation';
+import { editAsw } from '@/services/Question';
+interface EditAnswer {
+  answerEditable: boolean;
+  setAnswerEditable: (open: boolean) => void;
+  answerId: string;
+  answer: string;
 }
-const AddQuestion: React.FC<AddQuestion> = (props) => {
+
+const EditAnswer: React.FC<EditAnswer> = (props) => {
   const auth = useSelector((state: any) => state.auth)
-  const [formData, setFormData] = useState("")
+  const data = props.answer;
+  const [formData, setFormData] = useState(data)
   const dispatch = useDispatch();
-  const addQuestion = () => {
-    if (formData != "") {
-      addQues(dispatch, formData, auth.email)
-      setFormData("")
-    }
+  const editAnswer = () => {
+    editAsw(dispatch, formData, props.answerId)
   }
   const handleChange = (e) => {
+    formData == data;
     setFormData(e.target.value);
+  }
+  const cancelEdit = () => {
+    props.setAnswerEditable(false);
+    setFormData(data);
   }
   return (
     <div
-      className={`fixed top-0 left-0 z-99999 flex h-screen w-full justify-center overflow-y-scroll bg-black/80 py-5 px-4 ${props.popupOpen === true ? 'block' : 'hidden'
+      className={`fixed top-0 left-0 z-99999 flex h-screen w-full justify-center overflow-y-scroll bg-black/40 py-5 px-4 ${props.answerEditable === true ? 'block' : 'hidden'
         }`}
     >
       <div className="relative mt-20 m-auto w-full max-w-180 rounded-sm border border-stroke bg-gray p-4 shadow-default dark:border-strokedark dark:bg-meta-4 sm:p-8 xl:p-10">
         <button
-          onClick={() => props.setPopupOpen(false)}
+          onClick={cancelEdit}
           className="absolute right-1 top-1 sm:right-5 sm:top-5"
         >
           <svg
@@ -47,18 +54,18 @@ const AddQuestion: React.FC<AddQuestion> = (props) => {
           </svg>
         </button>
 
-        <form onSubmit={addQuestion}>
+        <form onSubmit={editAnswer}>
           <div className="mb-5">
             <label
-              htmlFor="question"
+              htmlFor="answer"
               className="mb-2.5 block font-medium text-black dark:text-white"
             >
-              Question
+              Answer
             </label>
             <textarea
               cols={30}
               rows={7}
-              placeholder="Enter Question"
+              placeholder="Enter Answer"
               className="w-full rounded-sm border border-stroke bg-white py-3 px-4.5 focus:border-primary focus-visible:outline-none dark:border-strokedark dark:bg-boxdark dark:focus:border-primary"
               value={formData}
               onChange={handleChange}
@@ -66,7 +73,7 @@ const AddQuestion: React.FC<AddQuestion> = (props) => {
             <button
               className="flex w-full items-center justify-center gap-2 rounded bg-primary py-2.5 px-4.5 font-medium text-white"
             >
-              Add question
+              Add
             </button>
           </div>
 
@@ -76,4 +83,4 @@ const AddQuestion: React.FC<AddQuestion> = (props) => {
   );
 };
 
-export default AddQuestion;
+export default EditAnswer;

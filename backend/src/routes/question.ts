@@ -10,4 +10,6 @@ router.get('/getQuestions', asyncHandler(QuestionController.getQuestions));
 router.post('/addAnswers', asyncHandler(QuestionController.addAnswers))
 router.delete('/delQuestion/:id', [checkJwt, checkRole(['ADMIN'])], asyncHandler(QuestionController.delQuestion));
 router.post('/delAnswer', asyncHandler(QuestionController.delAnswer));
+router.post('/editQuestion', asyncHandler(QuestionController.editQuestion))
+router.post('/editAnswer', asyncHandler(QuestionController.editAnswer))
 export default router;

@@ -5,27 +5,49 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import AddAnswer from './AddAnswer';
 import { delQues } from '@/services/Question';
+import EditQuestion from './EditQuestion';
+import EditAnswer from './EditAnswer';
+import { delAsw } from '@/services/Question';
+
 const AccordionItemOne: React.FC<FaqItem> = ({ active, handleToggle, faq }) => {
   const contentEl = useRef<HTMLDivElement>(null);
-  const { question, id, contents } = faq;
+  const { question, _id, answers } = faq;
   const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
-  const handleAnswer = () => {
+  const [editable, setEditable] = useState(false);
+  const [answerEditable, setAnswerEditable] = useState(false);
+  const [answerId, setAnswerId] = useState("");
+  const [answer, setAnswer] = useState("");
+  const handleQuestion = () => {
     setVisible(true);
   }
-  const delQuestion = (id) => {
-    delQues(dispatch, id)
+  const delQuestion = (sid: any) => {
+    delQues(dispatch, sid)
+  }
+
+  /////////////async
+  const handleAnswer = (element) => {
+    setAnswerId(element._id);
+    setAnswer(element.answer);
+    setAnswerEditable(true)
+
+  }
+  const questionEdit = () => {
+    setEditable(true)
+  }
+  const delAnswer = (element) => {
+    delAsw(dispatch, element._id)
   }
   return (
     <div className="rounded-md border border-stroke p-4 shadow-9 dark:border-strokedark dark:shadow-none sm:p-6">
       <div
-        className={`flex w-full items-center gap-1.5 sm:gap-3 xl:gap-6 ${active === id ? 'active' : ''
+        className={`flex w-full items-center gap-1.5 sm:gap-3 xl:gap-6 ${active === _id ? 'active' : ''
           }`}
 
       >
-        <div className="flex h-10.5 w-full max-w-10.5 items-center justify-center rounded-md bg-[#F3F5FC] dark:bg-meta-4" onClick={() => handleToggle(id)}>
+        <div className="flex h-10.5 w-full max-w-10.5 items-center justify-center rounded-md bg-[#F3F5FC] dark:bg-meta-4" onClick={() => handleToggle(_id)}>
           <svg
-            className={`fill-primary stroke-primary duration-200 ease-in-out dark:fill-white dark:stroke-white ${active === id ? 'rotate-180' : ''
+            className={`fill-primary stroke-primary duration-200 ease-in-out dark:fill-white dark:stroke-white ${active === _id ? 'rotate-180' : ''
               }`}
             width="18"
             height="10"
@@ -47,7 +69,7 @@ const AccordionItemOne: React.FC<FaqItem> = ({ active, handleToggle, faq }) => {
           </h4>
           <div className='flex'>
             <button className="flex w-25 items-center gap-2 rounded-sm py-1.5 px-4 text-left text-sm hover:bg-gray dark:hover:bg-meta-4"
-              onClick={handleAnswer}
+              onClick={handleQuestion}
             >
               <svg
                 className="fill-current"
@@ -72,7 +94,32 @@ const AccordionItemOne: React.FC<FaqItem> = ({ active, handleToggle, faq }) => {
               Answer
             </button>
             <button className="flex w-25 items-center gap-2 rounded-sm py-1.5 px-4 text-left text-sm hover:bg-gray dark:hover:bg-meta-4"
-              onClick={() => delQuestion(id)}
+              onClick={questionEdit}
+            >
+              <svg
+                className="fill-current"
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g clipPath="url(#clip0_62_9787)">
+                  <path
+                    d="M15.55 2.97499C15.55 2.77499 15.475 2.57499 15.325 2.42499C15.025 2.12499 14.725 1.82499 14.45 1.52499C14.175 1.24999 13.925 0.974987 13.65 0.724987C13.525 0.574987 13.375 0.474986 13.175 0.449986C12.95 0.424986 12.75 0.474986 12.575 0.624987L10.875 2.32499H2.02495C1.17495 2.32499 0.449951 3.02499 0.449951 3.89999V14C0.449951 14.85 1.14995 15.575 2.02495 15.575H12.15C13 15.575 13.725 14.875 13.725 14V5.12499L15.35 3.49999C15.475 3.34999 15.55 3.17499 15.55 2.97499ZM8.19995 8.99999C8.17495 9.02499 8.17495 9.02499 8.14995 9.02499L6.34995 9.62499L6.94995 7.82499C6.94995 7.79999 6.97495 7.79999 6.97495 7.77499L11.475 3.27499L12.725 4.49999L8.19995 8.99999ZM12.575 14C12.575 14.25 12.375 14.45 12.125 14.45H2.02495C1.77495 14.45 1.57495 14.25 1.57495 14V3.87499C1.57495 3.62499 1.77495 3.42499 2.02495 3.42499H9.72495L6.17495 6.99999C6.04995 7.12499 5.92495 7.29999 5.87495 7.49999L4.94995 10.3C4.87495 10.5 4.92495 10.675 5.02495 10.85C5.09995 10.95 5.24995 11.1 5.52495 11.1H5.62495L8.49995 10.15C8.67495 10.1 8.84995 9.97499 8.97495 9.84999L12.575 6.24999V14ZM13.5 3.72499L12.25 2.49999L13.025 1.72499C13.225 1.92499 14.05 2.74999 14.25 2.97499L13.5 3.72499Z"
+                    fill=""
+                  />
+                </g>
+                <defs>
+                  <clipPath id="clip0_62_9787">
+                    <rect width="16" height="16" fill="white" />
+                  </clipPath>
+                </defs>
+              </svg>
+              Edit
+            </button>
+            <button className="flex w-25 items-center gap-2 rounded-sm py-1.5 px-4 text-left text-sm hover:bg-gray dark:hover:bg-meta-4"
+              onClick={() => delQuestion(_id)}
             >
               <svg
                 className="fill-current"
@@ -108,16 +155,18 @@ const AccordionItemOne: React.FC<FaqItem> = ({ active, handleToggle, faq }) => {
 
       <div
         ref={contentEl}
-        className={`mt-5 duration-200 ease-in-out ${active === id ? 'block' : 'hidden'
+        className={`mt-5 duration-200 ease-in-out ${active === _id ? 'block' : 'hidden'
           }`}
       >
-        {contents.map((element, key) => (
+        {answers.map((element, key) => (
           <div key={key} className='grid grid-rows-2 grid-flow-col gap-4 border-b'>
             <div className='row-span-3'>{element.email || ""}:</div>
             <div><p className="text-lg" >{element.answer || ""}</p></div>
             <div className='flex row-span-1'>
 
-              <button className="flex w-25 items-center gap-2 rounded-sm py-1.5 px-4 text-left text-sm hover:bg-gray dark:hover:bg-meta-4">
+              <button className="flex w-25 items-center gap-2 rounded-sm py-1.5 px-4 text-left text-sm hover:bg-gray dark:hover:bg-meta-4"
+                onClick={() => delAnswer(element)}
+              >
                 <svg
                   className="fill-current"
                   width="16"
@@ -145,7 +194,9 @@ const AccordionItemOne: React.FC<FaqItem> = ({ active, handleToggle, faq }) => {
                 </svg>
                 Delete
               </button>
-              <button className="flex w-25 items-center gap-2 rounded-sm py-1.5 px-4 text-left text-sm hover:bg-gray dark:hover:bg-meta-4">
+              <button className="flex w-25 items-center gap-2 rounded-sm py-1.5 px-4 text-left text-sm hover:bg-gray dark:hover:bg-meta-4"
+                onClick={() => handleAnswer(element)}
+              >
                 <svg
                   className="fill-current"
                   width="16"
@@ -173,7 +224,9 @@ const AccordionItemOne: React.FC<FaqItem> = ({ active, handleToggle, faq }) => {
           </div>
         ))}
       </div>
-      <AddAnswer visible={visible} setVisible={setVisible} id={id}></AddAnswer>
+      <AddAnswer visible={visible} setVisible={setVisible} id={_id}></AddAnswer>
+      <EditQuestion editable={editable} setEditable={setEditable} question={question} id={_id}></EditQuestion>
+      <EditAnswer answerEditable={answerEditable} setAnswerEditable={setAnswerEditable} answerId={answerId} answer={answer}></EditAnswer>
     </div>
   );
 };
