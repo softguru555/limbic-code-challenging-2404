@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { createAnswer } from '@/services/Question';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import { useRouter } from 'next/navigation';
 import { editAsw } from '@/services/Question';
 interface EditAnswer {
   answerEditable: boolean;
@@ -11,25 +9,26 @@ interface EditAnswer {
   answer: string;
 }
 
-const EditAnswer: React.FC<EditAnswer> = (props) => {
+const EditAnswer: React.FC<EditAnswer> = ({ answerId, answer, setAnswerEditable, answerEditable }) => {
   const auth = useSelector((state: any) => state.auth)
-  const data = props.answer;
-  const [formData, setFormData] = useState(data)
-  const dispatch = useDispatch();
+  const [formData, setFormData] = useState('')
+  useEffect(() => {
+    setFormData(answer)
+  }, [answer])
+  const dispatch = useDispatch()
   const editAnswer = () => {
-    editAsw(dispatch, formData, props.answerId)
+    editAsw(dispatch, formData, answerId)
   }
   const handleChange = (e) => {
-    formData == data;
     setFormData(e.target.value);
   }
   const cancelEdit = () => {
-    props.setAnswerEditable(false);
-    setFormData(data);
+    setAnswerEditable(false);
+    setFormData(answer)
   }
   return (
     <div
-      className={`fixed top-0 left-0 z-99999 flex h-screen w-full justify-center overflow-y-scroll bg-black/40 py-5 px-4 ${props.answerEditable === true ? 'block' : 'hidden'
+      className={`fixed top-0 left-0 z-99999 flex h-screen w-full justify-center overflow-y-scroll bg-black/40 py-5 px-4 ${answerEditable === true ? 'block' : 'hidden'
         }`}
     >
       <div className="relative mt-20 m-auto w-full max-w-180 rounded-sm border border-stroke bg-gray p-4 shadow-default dark:border-strokedark dark:bg-meta-4 sm:p-8 xl:p-10">

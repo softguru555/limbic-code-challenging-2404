@@ -1,5 +1,5 @@
 "use client"
-import React, { useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { FaqItem } from '@/types/faqItem';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -24,15 +24,11 @@ const AccordionItemOne: React.FC<FaqItem> = ({ active, handleToggle, faq }) => {
   const delQuestion = (sid: any) => {
     delQues(dispatch, sid)
   }
-
   /////////////async
   const handleAnswer = (element) => {
-    const update = async (element) => {
-      setAnswerId(element._id);
-      setAnswer(element.answer)
-    }
-    update(element)
-    setAnswerEditable(true)
+    setAnswerId(element._id)                  /// change the value of Id  
+    setAnswer(element.answer)                 //  change the answer 
+    setAnswerEditable(true)                   //  open the modal
   }
 
   const questionEdit = () => {
