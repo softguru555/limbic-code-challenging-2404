@@ -162,10 +162,10 @@ const AccordionItemOne: React.FC<FaqItem> = ({ active, handleToggle, faq }) => {
           }`}
       >
         {answers && answers.map((element, key) => (
-          <div key={key} className='gap-4 border-b'>
-            <div className='row-span-3'>{element.email || ""}:</div>
-            <div><p className="text-lg" >{element.answer || ""}</p></div>
-            <div className='flex row-span-1'>
+          <div key={key} className='grid grid-rows-2 grid-flow-col gap-4 border-b'>
+            <div className='row-span-2 col-span-1'>{element.email || ""}:</div>
+            <div className="text-lg row-span-1 col-span-7" >{element.answer || ""}</div>
+            <div className='flex row-span-1 col-span-7'>
 
               <button className="flex w-25 items-center gap-2 rounded-sm py-1.5 px-4 text-left text-sm hover:bg-gray dark:hover:bg-meta-4"
                 onClick={() => delAnswer(element)}

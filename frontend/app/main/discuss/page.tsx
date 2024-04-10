@@ -59,36 +59,18 @@ const Discuss: React.FC = () => {
         </div>
       </div>
 
-      <div className="p-4 sm:p-6 xl:p-12.5">
-        <div className="grid grid-cols-1 gap-y-6 gap-x-4 md:gap-x-6 xl:grid-cols-2 xl:gap-x-7.5">
+      <div className="p-4 sm:p-6 w-full">
+        <div className="gap-y-6 gap-x-4 md:gap-x-6 xl:gap-x-7.5">
           <div className="flex flex-col gap-6">
             {questions.map((faq, key) => {
-              if ((key + 1) % 2 !== 0) {
-                return (
-                  <AccordionItemOne
-                    key={key + 1}
-                    active={active}
-                    handleToggle={handleToggle}
-                    faq={faq}
-                  />
-                );
-              }
-              return null;
-            })}
-          </div>
-
-          <div className="flex flex-col gap-6">
-            {questions.map((faq, key) => {
-              if ((key + 1) % 2 === 0) {
-                return (
-                  <AccordionItemOne
-                    key={key + 1}
-                    active={active}
-                    handleToggle={handleToggle}
-                    faq={faq}
-                  />
-                );
-              }
+              return (
+                <AccordionItemOne
+                  key={key + 1}
+                  active={active}
+                  handleToggle={handleToggle}
+                  faq={faq}
+                />
+              );
               return null;
             })}
           </div>
