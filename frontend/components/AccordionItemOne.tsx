@@ -162,7 +162,7 @@ const AccordionItemOne: React.FC<FaqItem> = ({ active, handleToggle, faq }) => {
           }`}
       >
         {answers && answers.map((element, key) => (
-          <div key={key} className='grid grid-rows-2 grid-flow-col gap-4 border-b'>
+          <div key={key} className='gap-4 border-b'>
             <div className='row-span-3'>{element.email || ""}:</div>
             <div><p className="text-lg" >{element.answer || ""}</p></div>
             <div className='flex row-span-1'>
