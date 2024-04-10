@@ -27,11 +27,14 @@ const AccordionItemOne: React.FC<FaqItem> = ({ active, handleToggle, faq }) => {
 
   /////////////async
   const handleAnswer = (element) => {
-    setAnswerId(element._id);
-    setAnswer(element.answer);
+    const update = async (element) => {
+      setAnswerId(element._id);
+      setAnswer(element.answer)
+    }
+    update(element)
     setAnswerEditable(true)
-
   }
+
   const questionEdit = () => {
     setEditable(true)
   }
@@ -158,7 +161,7 @@ const AccordionItemOne: React.FC<FaqItem> = ({ active, handleToggle, faq }) => {
         className={`mt-5 duration-200 ease-in-out ${active === _id ? 'block' : 'hidden'
           }`}
       >
-        {answers.map((element, key) => (
+        {answers && answers.map((element, key) => (
           <div key={key} className='grid grid-rows-2 grid-flow-col gap-4 border-b'>
             <div className='row-span-3'>{element.email || ""}:</div>
             <div><p className="text-lg" >{element.answer || ""}</p></div>
@@ -220,7 +223,6 @@ const AccordionItemOne: React.FC<FaqItem> = ({ active, handleToggle, faq }) => {
                 Edit
               </button>
             </div>
-
           </div>
         ))}
       </div>
