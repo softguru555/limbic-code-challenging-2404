@@ -168,7 +168,7 @@ const AccordionItemOne: React.FC<FaqItem> = ({ active, handleToggle, faq }) => {
               <div className="text-lg row-span-1 col-span-4" >{element.answer || ""}</div>
             </div>
             <div className="flex flex-row-reverse">
-              <button className="w-25 items-center gap-2 rounded-sm py-1.5 px-4 text-left text-sm hover:bg-gray dark:hover:bg-meta-4"
+              <button className="flex w-25 items-center gap-2 rounded-sm py-1.5 px-4 text-left text-sm hover:bg-gray dark:hover:bg-meta-4"
                 onClick={() => delAnswer(element)}
               >
                 <svg
@@ -198,7 +198,7 @@ const AccordionItemOne: React.FC<FaqItem> = ({ active, handleToggle, faq }) => {
                 </svg>
                 Delete
               </button>
-              <button className="w-25 items-center gap-2 rounded-sm py-1.5 px-4 text-left text-sm hover:bg-gray dark:hover:bg-meta-4"
+              <button className="flex w-25 items-center gap-2 rounded-sm py-1.5 px-4 text-left text-sm hover:bg-gray dark:hover:bg-meta-4"
                 onClick={() => handleAnswer(element)}
               >
                 <svg
