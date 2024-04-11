@@ -7,7 +7,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from '../store/store';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import { MyProvider } from "@/context/userContext";
 export default function RootLayout({
   children,
 }: {
@@ -19,9 +19,12 @@ export default function RootLayout({
     <html suppressHydrationWarning lang="en">
       <body>
         <Provider store={store}>
-          <PersistGate loading={null} persistor={persistor}>
-            {children}
-          </PersistGate>
+          <MyProvider>
+            <PersistGate loading={null} persistor={persistor}>
+              {children}
+            </PersistGate>
+          </MyProvider>
+
         </Provider>
         <ToastContainer />
       </body>

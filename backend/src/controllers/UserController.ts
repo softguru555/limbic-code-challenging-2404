@@ -53,7 +53,6 @@ class UserController {
         // Mongoose automatically casts the id to ObjectID
         const user = await User.find();
         if (!user) throw new NotFoundError(`User is not found`);
-
         res.status(200).type('json').send(user);
     };
 
