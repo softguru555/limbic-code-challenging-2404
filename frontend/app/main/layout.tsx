@@ -16,7 +16,7 @@ export default function RootLayout({
     if (!window.localStorage.getItem('token')) {
       router.push('/')
     }
-    setTimeout(() => setLoading(false), 100);
+    setTimeout(() => setLoading(false), 10000);
   }, []);
 
   return (

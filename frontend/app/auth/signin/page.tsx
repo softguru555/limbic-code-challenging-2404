@@ -1,21 +1,22 @@
 "use client"
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useDispatch } from 'react-redux';
+// import { useDispatch } from 'react-redux';
 import { toast } from "react-toastify";
-import { loginSuccess } from "@/store/actions/authAction";
+// import { loginSuccess } from "@/store/actions/authAction";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import { useRouter } from 'next/navigation'
 import { constants } from "@/app/constants";
+import { MyContext } from "@/context/userContext";
 // export const dynamic = 'force-dynamic';
 
 const SignIn: React.FC = () => {
-  const dispatch = useDispatch();
-
+  // const dispatch = useDispatch();
+  const contextData = useContext(MyContext)
   const [formData, setFormData] = useState({ email: '', password: '' })
   const [isLoading, setIsLoading] = useState(false)
-  const [token, setToken] = useLocalStorage("token", null)
+  // const [token, setToken] = useLocalStorage("token", null)
 
   const router = useRouter();
   const handleChange = (e) => {
@@ -43,11 +44,12 @@ const SignIn: React.FC = () => {
         return
       }
 
-      dispatch(loginSuccess(data.user));
-      setToken(data.token);
-      window.sessionStorage.setItem("token", data.token);
+      // dispatch(loginSuccess(data.user));
+      contextData.setToken(data.token);
+      contextData.setUserInfo(data.user);
+      window.localStorage.setItem("token", data.token);
       if (data.user.role == 'ADMIN')
-        router.push('/main/agent', data);
+        router.push('/main/agent');
       else
         router.push('/main/discuss');
       toast.success('Login Success');

@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useMemo, useState } from "react";
 import TableFour from "@/components/Tables/TableFour";
-
 const Agent: React.FC = () => {
   return (
     <>

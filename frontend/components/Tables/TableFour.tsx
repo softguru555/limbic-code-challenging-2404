@@ -3,19 +3,30 @@ import { getAgent, deleteAgent } from "@/services/Agent";
 import { useDispatch, useSelector } from "react-redux";
 import ResetPassword from "@/components/ResetPassword";
 import { useRouter } from "next/navigation";
-
+import { useContext } from "react";
+import { MyContext } from "@/context/userContext";
 const TableFour: React.FC = () => {
   const router = useRouter();
+  const contextData = useContext(MyContext);
   const dispatch = useDispatch();
-  const auth = useSelector((state: any) => state.auth);
+  const auth = contextData.userInfo;
+  var user: any[] = [];
+
   useEffect(() => {
-    if (auth.isAuthenticated == true) {
-      getAgent(dispatch);
+    const init = async () => {
+      if (auth.email) {
+        user = await getAgent();
+        await contextData.setUsers(user);
+        console.log("users", user)
+      }
+      else router.push('/');
     }
-    else router.push('/');
-  }, [dispatch]);
-  const { user } = useSelector((state: any) => state.user);
+    init()
+  }, []);
+  user = contextData.users;
   const [isReset, setReset] = useState(false);
+  console.log("users", contextData.users)
+
   const delUser = (id) => {
     deleteAgent(dispatch, id);
   }

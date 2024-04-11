@@ -5,13 +5,17 @@ import { headers } from "next/dist/client/components/headers";
 import { ApiHeader } from "@/app/apiConstants";
 import { authHeader } from "@/app/apiConstants";
 import { toast } from "react-toastify";
-export const getAgent = async (dispatch) => {
+import { useContext } from "react";
+import { MyContext } from "@/context/userContext";
+export const getAgent = async () => {
   try {
     const res = ApiHeader.get(
       '/api/user/getUsers', authHeader()
     );
-    const data = (await res).data;
-    return dispatch(initiateUser(data));
+    const data = await res;
+    console.log("dfdf", data.data);
+    return data.data;
+    // return dispatch(initiateUser(data));
   } catch (error) {
     console.log("Error fetching data:", error);
   }
