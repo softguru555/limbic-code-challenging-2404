@@ -8,12 +8,12 @@ import { toast } from "react-toastify";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import { useRouter } from 'next/navigation'
 import { constants } from "@/app/constants";
-import { MyContext } from "@/context/userContext";
+import { UserContext } from "@/context/userContext";
 // export const dynamic = 'force-dynamic';
 
 const SignIn: React.FC = () => {
   // const dispatch = useDispatch();
-  const contextData = useContext(MyContext)
+  const contextData = useContext(UserContext)
   const [formData, setFormData] = useState({ email: '', password: '' })
   const [isLoading, setIsLoading] = useState(false)
   // const [token, setToken] = useLocalStorage("token", null)
@@ -43,7 +43,6 @@ const SignIn: React.FC = () => {
         toast.error(data.message)
         return
       }
-
       // dispatch(loginSuccess(data.user));
       contextData.setToken(data.token);
       contextData.setUserInfo(data.user);
@@ -80,12 +79,10 @@ const SignIn: React.FC = () => {
                   height={32}
                 />
               </Link>
-
               <p className="2xl:px-20">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit
                 suspendisse.
               </p>
-
               <span className="mt-15 inline-block">
                 <svg
                   width="350"

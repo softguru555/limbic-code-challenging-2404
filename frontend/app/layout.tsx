@@ -7,24 +7,25 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from '../store/store';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { MyProvider } from "@/context/userContext";
+import { UserProvider } from "@/context/userContext";
+import { useState } from "react";
+import { ColorProvider } from "@/context/colorContext";
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-
-
   return (
     <html suppressHydrationWarning lang="en">
       <body>
         <Provider store={store}>
-          <MyProvider>
-            <PersistGate loading={null} persistor={persistor}>
-              {children}
-            </PersistGate>
-          </MyProvider>
-
+          <UserProvider>
+            <ColorProvider>
+              <PersistGate loading={null} persistor={persistor}>
+                {children}
+              </PersistGate>
+            </ColorProvider>
+          </UserProvider>
         </Provider>
         <ToastContainer />
       </body>

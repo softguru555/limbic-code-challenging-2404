@@ -1,30 +1,32 @@
 import React from 'react';
 import { createContext } from 'react';
 
-export const MyContext = createContext(null);
+export const UserContext = createContext(null);
 
-
-export const MyProvider = ({ children }) => {
+export const UserProvider = ({ children }) => {
   const [token, setToken] = React.useState(null);
   const [userInfo, setUserInfo] = React.useState([]);
   const [users, setUsers] = React.useState([]);
-  const [colorMode, setColorMode] = React.useState('light');
-  return <MyContext.Provider
+  const delUser = async (id: any) => {
+    const data = users.filter(element => element.id !== id);
+    setUsers(data);
+  }
+  return <UserContext.Provider
     value={{
       token,
       setToken,
       userInfo,
       setUserInfo,
       users,
-      setUsers
+      setUsers,
+      delUser
     }}>
     {children
     }
-
-  </MyContext.Provider>
+  </UserContext.Provider>
 }
 
 
 export const useGlobalContext = () => {
-  return React.useContext(MyContext);
+  return React.useContext(UserContext);
 }

@@ -6,26 +6,24 @@ import { ApiHeader } from "@/app/apiConstants";
 import { authHeader } from "@/app/apiConstants";
 import { toast } from "react-toastify";
 import { useContext } from "react";
-import { MyContext } from "@/context/userContext";
+import { UserContext } from "@/context/userContext";
 export const getAgent = async () => {
   try {
     const res = ApiHeader.get(
       '/api/user/getUsers', authHeader()
     );
     const data = await res;
-    console.log("dfdf", data.data);
     return data.data;
-    // return dispatch(initiateUser(data));
   } catch (error) {
     console.log("Error fetching data:", error);
   }
 };
 
-export const deleteAgent = async (dispatch: any, id: any) => {
+export const deleteAgent = async (id: any) => {
   try {
     const res = ApiHeader.delete(`/api/user/userDelete/${id}`, authHeader());
     toast.success("Success")
-    return dispatch(deleteUser(id));
+    return id;
 
   } catch (error) {
     console.log("error in update (service) => ", error.response.data);
