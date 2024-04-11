@@ -3,18 +3,16 @@ import { useContext } from "react";
 import { ColorContext } from "@/context/colorContext";
 import { useEffect } from "react";
 const DarkModeSwitcher = () => {
-  const contextData = useContext(ColorContext);
-  const colorMode = contextData.colorMode;
+  const { colorMode, setColorMode } = useContext(ColorContext);
   const handleColor = (colorMode) => {
     if (colorMode == 'dark')
-      contextData.setColorMode('light')
+      setColorMode('light')
     else
-      contextData.setColorMode('dark')
+      setColorMode('dark')
   }
   useEffect(() => {
     const className = 'dark';
     const bodyClass = window.document.body.classList;
-
     colorMode === 'dark'
       ? bodyClass.add(className)
       : bodyClass.remove(className);

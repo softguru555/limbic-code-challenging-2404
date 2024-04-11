@@ -4,7 +4,6 @@ import DropdownMessage from "./DropdownMessage";
 import DropdownNotification from "./DropdownNotification";
 import DropdownUser from "./DropdownUser";
 import Image from "next/image";
-import { ColorContext, ColorProvider } from "@/context/colorContext";
 
 const Header = (props: {
   sidebarOpen: string | boolean | undefined;
@@ -101,9 +100,7 @@ const Header = (props: {
         <div className="flex items-center gap-3 2xsm:gap-7">
           <ul className="flex items-center gap-2 2xsm:gap-4">
             {/* <!-- Color Mode Switcher --> */}
-            <ColorProvider>
-              <DarkModeSwitcher />
-            </ColorProvider>
+            <DarkModeSwitcher />
             <DropdownNotification />
 
             <DropdownMessage />

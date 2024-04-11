@@ -4,20 +4,18 @@ import { useDispatch, useSelector } from "react-redux";
 import ResetPassword from "@/components/ResetPassword";
 import { useRouter } from "next/navigation";
 import { useContext } from "react";
-import { MyContext } from "@/context/userContext";
+import { UserContext } from "@/context/userContext";
 const TableFour: React.FC = () => {
   const router = useRouter();
-  const contextData = useContext(MyContext);
+  const contextData = useContext(UserContext);
   const dispatch = useDispatch();
   const auth = contextData.userInfo;
   var user: any[] = [];
-
   useEffect(() => {
     const init = async () => {
-      if (auth.email) {
+      if (window.localStorage.getItem('token')) {
         user = await getAgent();
-        await contextData.setUsers(user);
-        console.log("users", user)
+        await contextData.setUsers(user)
       }
       else router.push('/');
     }
@@ -25,10 +23,9 @@ const TableFour: React.FC = () => {
   }, []);
   user = contextData.users;
   const [isReset, setReset] = useState(false);
-  console.log("users", contextData.users)
-
-  const delUser = (id) => {
-    deleteAgent(dispatch, id);
+  const delUser = async (id: any) => {
+    const delId = await deleteAgent(id);
+    await contextData.delUser(delId);
   }
 
   return (

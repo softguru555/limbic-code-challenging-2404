@@ -6,7 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useSelector } from "react-redux";
 import { useContext } from "react";
-import { MyContext } from "@/context/userContext";
+import { UserContext } from "@/context/userContext";
 interface SidebarProps {
   sidebarOpen: boolean;
   setSidebarOpen: (arg: boolean) => void;
@@ -14,18 +14,15 @@ interface SidebarProps {
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const pathname = usePathname();
-  const contextData = useContext(MyContext);
+  const contextData = useContext(UserContext);
   // const auth = useSelector((state: any) => state.auth);
   const auth = contextData.userInfo;
   const trigger = useRef<any>(null);
   const sidebar = useRef<any>(null);
-
   let storedSidebarExpanded = "true";
-
   const [sidebarExpanded, setSidebarExpanded] = useState(
     storedSidebarExpanded === null ? false : storedSidebarExpanded === "true"
   );
-
   // close on click outside
   useEffect(() => {
     const clickHandler = ({ target }: MouseEvent) => {
@@ -97,7 +94,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
       <div className="no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear">
         <nav className="mt-5 py-4 px-4 lg:mt-9 lg:px-6">
-          {auth.role === "ADMIN" && (
+          {(
             <div>
               <h3 className="mb-4 ml-4 text-sm font-semibold text-bodydark2">
                 MENU

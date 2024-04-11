@@ -11,7 +11,6 @@ export default function RootLayout({
   const router = useRouter()
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [loading, setLoading] = useState<boolean>(true);
-
   useEffect(() => {
     if (!window.localStorage.getItem('token')) {
       router.push('/')
