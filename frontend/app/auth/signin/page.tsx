@@ -8,15 +8,12 @@ import { toast } from "react-toastify";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import { useRouter } from 'next/navigation'
 import { constants } from "@/app/constants";
-import { UserContext } from "@/context/userContext";
+import { AuthStore } from "@/store/authStore";
 // export const dynamic = 'force-dynamic';
 
 const SignIn: React.FC = () => {
-  // const dispatch = useDispatch();
-  const contextData = useContext(UserContext)
   const [formData, setFormData] = useState({ email: '', password: '' })
   const [isLoading, setIsLoading] = useState(false)
-  // const [token, setToken] = useLocalStorage("token", null)
 
   const router = useRouter();
   const handleChange = (e) => {
@@ -37,16 +34,18 @@ const SignIn: React.FC = () => {
           body: JSON.stringify(formData),
         }
       );
+      const handleAuth = new AuthStore();
       const data = await res.json();
+      handleAuth.loadAuth(data);
+
       if (!data.user) {
         setIsLoading(false)
         toast.error(data.message)
         return
       }
       // dispatch(loginSuccess(data.user));
-      contextData.setToken(data.token);
-      contextData.setUserInfo(data.user);
       window.localStorage.setItem("token", data.token);
+      window.localStorage.setItem("email", data.user.email)
       if (data.user.role == 'ADMIN')
         router.push('/main/agent');
       else

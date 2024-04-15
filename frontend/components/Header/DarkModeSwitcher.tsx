@@ -1,24 +1,7 @@
 import useColorMode from "@/hooks/useColorMode";
-import { useContext } from "react";
-import { ColorContext } from "@/context/colorContext";
-import { useEffect } from "react";
-const DarkModeSwitcher = () => {
-  const { colorMode, setColorMode } = useContext(ColorContext);
-  const handleColor = (colorMode) => {
-    if (colorMode == 'dark')
-      setColorMode('light')
-    else
-      setColorMode('dark')
-  }
-  useEffect(() => {
-    const className = 'dark';
-    const bodyClass = window.document.body.classList;
-    colorMode === 'dark'
-      ? bodyClass.add(className)
-      : bodyClass.remove(className);
-  }, [colorMode]);
 
-  // const [colorMode, setColorMode] = useColorMode();
+const DarkModeSwitcher = () => {
+  const [colorMode, setColorMode] = useColorMode();
 
   return (
     <li>
@@ -28,7 +11,11 @@ const DarkModeSwitcher = () => {
       >
         <input
           type="checkbox"
-          onChange={() => handleColor(colorMode)}
+          onChange={() => {
+            if (typeof setColorMode === 'function') {
+              setColorMode(colorMode === 'light' ? 'dark' : 'light');
+            }
+          }}
           className="dur absolute top-0 z-50 m-0 h-full w-full cursor-pointer opacity-0"
         />
         <span

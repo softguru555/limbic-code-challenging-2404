@@ -2,14 +2,15 @@
 import "./globals.css";
 import "./data-tables-css.css";
 import "./satoshi.css";
-import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
-import { store, persistor } from '../store/store';
+import { persistor } from '../store/store';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { UserProvider } from "@/context/userContext";
-import { useState } from "react";
-import { ColorProvider } from "@/context/colorContext";
+import { Provider } from "mobx-react";
+import { AuthStore } from "@/store/authStore";
+// import rootStore from "@/store/index";
+import rootStore from "@/store";
+import { Observer } from "mobx-react";
 export default function RootLayout({
   children,
 }: {
@@ -18,16 +19,14 @@ export default function RootLayout({
   return (
     <html suppressHydrationWarning lang="en">
       <body>
-        <Provider store={store}>
-          <UserProvider>
-            <ColorProvider>
-              <PersistGate loading={null} persistor={persistor}>
-                {children}
-              </PersistGate>
-            </ColorProvider>
-          </UserProvider>
+        <Provider rootStore={rootStore}
+          questionStore={rootStore.questionhandle}
+          agentStore={rootStore.handleAngent}>
+          <PersistGate loading={null} persistor={persistor}>
+            {children}
+          </PersistGate>
+          <ToastContainer />
         </Provider>
-        <ToastContainer />
       </body>
     </html>
   );

@@ -31,7 +31,7 @@ class QuestionController {
         try {
             ques = Question.build({ question, email } as IQuestion)
             await ques.save();
-            return res.status(200).send("Success");
+            return res.status(200).type('json').send(ques);
         } catch (e: any) {
             console.error(e);
             const error = e as Error.ValidationError;

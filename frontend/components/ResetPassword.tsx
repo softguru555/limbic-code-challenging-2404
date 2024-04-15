@@ -12,9 +12,8 @@ interface ResetPassword {
 
 const ResetPassword: React.FC<ResetPassword> = (props) => {
   const [formData, setFormData] = useState("");
-  const dispatch = useDispatch();
   const resetPasswd = () => {
-    resetPassword(dispatch, props.id, formData)
+    resetPassword(props.id, formData)
     props.setReset(false)
   }
   return (
