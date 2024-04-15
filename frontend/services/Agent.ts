@@ -6,7 +6,6 @@ import { ApiHeader } from "@/app/apiConstants";
 import { authHeader } from "@/app/apiConstants";
 import { toast } from "react-toastify";
 import { useContext } from "react";
-import { UserContext } from "@/context/userContext";
 export const getAgent = async () => {
   try {
     const res = ApiHeader.get(
@@ -21,7 +20,7 @@ export const getAgent = async () => {
 
 export const deleteAgent = async (id: any) => {
   try {
-    const res = ApiHeader.delete(`/api/user/userDelete/${id}`, authHeader());
+    const res = await ApiHeader.delete(`/api/user/userDelete/${id}`, authHeader());
     toast.success("Success")
     return id;
 
@@ -30,11 +29,12 @@ export const deleteAgent = async (id: any) => {
     toast.error(error.response.data.message)
   }
 };
-export const resetPassword = async (dispatch: any, id: any, password: any) => {
+export const resetPassword = async (id: any, password: any) => {
   try {
-    const user = ApiHeader.post(`/api/auth/change-password`, { id: id, password: password }, authHeader());
+    const user = await ApiHeader.post(`/api/auth/change-password`, { id: id, password: password }, authHeader());
     toast.success("Sucess")
-    return dispatch(updateUser((await user).data));
+    console.log("user", user); return;
+    return user;
 
   } catch (error) {
     console.log("error in update (service) => ", error.response.data);

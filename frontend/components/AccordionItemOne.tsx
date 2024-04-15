@@ -2,17 +2,16 @@
 import React, { useEffect, useRef } from 'react'
 import { FaqItem } from '@/types/faqItem';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import AddAnswer from './AddAnswer';
 import { delQues } from '@/services/Question';
 import EditQuestion from './EditQuestion';
 import EditAnswer from './EditAnswer';
 import { delAsw } from '@/services/Question';
-
+import { questionhandle } from '@/store/questionStore';
+import { answerHandle } from '@/store/answerStore';
 const AccordionItemOne: React.FC<FaqItem> = ({ active, handleToggle, faq }) => {
   const contentEl = useRef<HTMLDivElement>(null);
   const { question, _id, answers } = faq;
-  const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
   const [editable, setEditable] = useState(false);
   const [answerEditable, setAnswerEditable] = useState(false);
@@ -22,7 +21,8 @@ const AccordionItemOne: React.FC<FaqItem> = ({ active, handleToggle, faq }) => {
     setVisible(true);
   }
   const delQuestion = (sid: any) => {
-    delQues(dispatch, sid)
+    const delId = delQues(sid)
+    questionhandle.delQuestion(sid);
   }
   /////////////async
   const handleAnswer = (element) => {
@@ -35,7 +35,8 @@ const AccordionItemOne: React.FC<FaqItem> = ({ active, handleToggle, faq }) => {
     setEditable(true)
   }
   const delAnswer = (element) => {
-    delAsw(dispatch, element._id)
+    const data = delAsw(element._id)
+    // questionhandle.loadQuestions(data)
   }
   return (
     <div className="rounded-md border border-stroke p-4 shadow-9 dark:border-strokedark dark:shadow-none sm:p-6">

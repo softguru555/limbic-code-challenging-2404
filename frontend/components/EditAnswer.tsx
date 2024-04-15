@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
 import { editAsw } from '@/services/Question';
+import { answerHandle } from '@/store/answerStore';
 interface EditAnswer {
   answerEditable: boolean;
   setAnswerEditable: (open: boolean) => void;
@@ -10,14 +9,14 @@ interface EditAnswer {
 }
 
 const EditAnswer: React.FC<EditAnswer> = ({ answerId, answer, setAnswerEditable, answerEditable }) => {
-  const auth = useSelector((state: any) => state.auth)
   const [formData, setFormData] = useState('')
   useEffect(() => {
     setFormData(answer)
   }, [answer])
-  const dispatch = useDispatch()
   const editAnswer = () => {
-    editAsw(dispatch, formData, answerId)
+    const data = editAsw(formData, answerId)
+    // answerHandle.loadAnswers(data)
+
   }
   const handleChange = (e) => {
     setFormData(e.target.value);

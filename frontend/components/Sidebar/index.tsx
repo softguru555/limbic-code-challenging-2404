@@ -5,8 +5,6 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { useSelector } from "react-redux";
-import { useContext } from "react";
-import { UserContext } from "@/context/userContext";
 interface SidebarProps {
   sidebarOpen: boolean;
   setSidebarOpen: (arg: boolean) => void;
@@ -14,9 +12,7 @@ interface SidebarProps {
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const pathname = usePathname();
-  const contextData = useContext(UserContext);
   // const auth = useSelector((state: any) => state.auth);
-  const auth = contextData.userInfo;
   const trigger = useRef<any>(null);
   const sidebar = useRef<any>(null);
   let storedSidebarExpanded = "true";
@@ -48,7 +44,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     document.addEventListener("keydown", keyHandler);
     return () => document.removeEventListener("keydown", keyHandler);
   });
-  console.log("sidebarExpand", sidebarOpen)
   useEffect(() => {
     localStorage.setItem("sidebar-expanded", sidebarExpanded.toString());
     if (sidebarExpanded) {

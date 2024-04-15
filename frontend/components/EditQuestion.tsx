@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { createAnswer, editQues } from '@/services/Question';
-import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
 import { useRouter } from 'next/navigation';
+import { answerHandle } from '@/store/answerStore';
+import { questionhandle } from '@/store/questionStore';
 
 interface EditQuestion {
   editable: boolean;
@@ -12,12 +12,12 @@ interface EditQuestion {
 }
 
 const EditQuestion: React.FC<EditQuestion> = (props) => {
-  const auth = useSelector((state: any) => state.auth)
   const data = props.question;
   const [editData, setEditData] = useState(data)
-  const dispatch = useDispatch();
   const EditQuestion = () => {
-    editQues(dispatch, editData, props.id)
+    const data = editQues(editData, props.id)
+    console.log("dkdkd", data);
+    // questionhandle.loadQuestions(data)
   }
   const handleChange = (e) => {
     setEditData(e.target.value);

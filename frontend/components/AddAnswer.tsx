@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { createAnswer } from '@/services/Question';
-import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
 import { useRouter } from 'next/navigation';
-
+import { answerHandle } from '@/store/answerStore';
 interface AddAnswer {
   visible: boolean;
   setVisible: (open: boolean) => void;
@@ -11,12 +9,12 @@ interface AddAnswer {
 }
 
 const AddAnswer: React.FC<AddAnswer> = (props) => {
-  const auth = useSelector((state: any) => state.auth)
   const [formData, setFormData] = useState("")
-  const dispatch = useDispatch();
-  const addQuestion = () => {
+  const email = window.localStorage.getItem("email")
+  const addAsw = async () => {
     if (formData != "") {
-      createAnswer(dispatch, formData, auth.email, props.id)
+      const data = await createAnswer(formData, email, props.id)
+      answerHandle.addAnswer(data)
       setFormData("")
     }
   }
@@ -50,7 +48,7 @@ const AddAnswer: React.FC<AddAnswer> = (props) => {
           </svg>
         </button>
 
-        <form onSubmit={addQuestion}>
+        <form onSubmit={addAsw}>
           <div className="mb-5">
             <label
               htmlFor="answer"

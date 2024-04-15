@@ -1,19 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { addQues } from '@/services/Question';
-import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
-
+import { AuthStore } from '@/store/authStore';
+import { handleAngent } from '@/store/agentStore';
+import { inject, observer } from 'mobx-react';
+import { Observer } from 'mobx-react';
+import { observe } from 'mobx';
+import { questionhandle } from '@/store/questionStore';
 interface AddQuestion {
   popupOpen: boolean;
   setPopupOpen: (open: boolean) => void;
 }
-const AddQuestion: React.FC<AddQuestion> = (props) => {
-  const auth = useSelector((state: any) => state.auth)
+const AddQuestion: React.FC<AddQuestion> = observer((props) => {
   const [formData, setFormData] = useState("")
-  const dispatch = useDispatch();
-  const addQuestion = () => {
+  const email = window.localStorage.getItem("email");
+  const addQuestion = async () => {
     if (formData != "") {
-      addQues(dispatch, formData, auth.email)
+      const result = addQues(formData, email)
       setFormData("")
     }
   }
@@ -74,6 +76,6 @@ const AddQuestion: React.FC<AddQuestion> = (props) => {
       </div>
     </div>
   );
-};
+});
 
 export default AddQuestion;
