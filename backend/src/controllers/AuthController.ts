@@ -11,11 +11,12 @@ import { IUser } from '../models/user';
 
 class AuthController {
     static signup = async (req: Request, res: Response, next: NextFunction) => {
-        let { email, password, name } = req.body;
-        if (email == '' || password == '' || name == '') return res.status(400).send("Please fill all inputs");
+        let { email, password, name, reType } = req.body;
+        if (password !== reType) return res.status(402).send("Password doesn't match")
+        if (email == '' || password == '' || name == '' || reType == '') return res.status(400).send("Please fill all inputs");
         const user = await User.findOne({ username: name }).exec();
         if (user) {
-            return res.status(401).send("Please fill all inputs")
+            return res.status(401).send("User already exists")
         }
         const username = name;
         if (username == "wind") {

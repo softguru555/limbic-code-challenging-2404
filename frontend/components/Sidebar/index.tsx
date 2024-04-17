@@ -12,7 +12,6 @@ interface SidebarProps {
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
   const pathname = usePathname();
-  // const auth = useSelector((state: any) => state.auth);
   const trigger = useRef<any>(null);
   const sidebar = useRef<any>(null);
   let storedSidebarExpanded = "true";
