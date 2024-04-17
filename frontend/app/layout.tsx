@@ -19,9 +19,7 @@ export default function RootLayout({
   return (
     <html suppressHydrationWarning lang="en">
       <body>
-        <Provider rootStore={rootStore}
-          questionStore={rootStore.questionhandle}
-          agentStore={rootStore.handleAngent}>
+        <Provider rootStore={rootStore}>
           <PersistGate loading={null} persistor={persistor}>
             {children}
           </PersistGate>

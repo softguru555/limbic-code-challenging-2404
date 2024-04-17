@@ -37,6 +37,7 @@ export class QuestionStore {
     }
     this.loadQuestions(this.questions)
   }
+
   addQuestion(data: any) {
     this.tempQuestions = data;
   }

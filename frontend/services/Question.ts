@@ -26,6 +26,8 @@ export const getQues = async () => {
       '/api/question/getQuestions', authHeader()
     );
     const data = (await res).data
+    console.log('ques......', data);
+
     return data;
   } catch (error) {
     console.log("Error fetching data:", error);
@@ -90,10 +92,9 @@ export const delAsw = async (id: any) => {
     const res = await ApiHeader.post(
       "/api/question/delAnswer", { id: id }, authHeader()
     );
-    const data = (await res).data
+    const data = res.data
     toast.success("Success")
     return data;
-    // return dispatch(initiateQuestion(data));
   } catch (error) {
     console.log("Error fetching data:", error);
   }

@@ -2,7 +2,6 @@
 import AddQuestion from "@/components/AddQuestion";
 import { useState, useEffect } from "react";
 import { getQues, createAnswer } from "@/services/Question";
-import { useDispatch, useSelector } from "react-redux";
 import AccordionItemOne from "@/components/AccordionItemOne"
 import { questionhandle } from "@/store/questionStore";
 import { Observer } from "mobx-react"
