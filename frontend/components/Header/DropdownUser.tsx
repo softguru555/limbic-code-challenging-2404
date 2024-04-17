@@ -1,21 +1,16 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useSelector } from "react-redux";
-// import { useDispatch } from "react-redux";
-import { logout } from "@/store/actions/authAction";
 import { useRouter } from "next/navigation";
 
 const DropdownUser = () => {
   const router = useRouter();
-  // const dispatch = useDispatch();
-  // const auth = useSelector((state: any) => state.auth);
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const trigger = useRef<any>(null);
   const dropdown = useRef<any>(null);
   const Logout = () => {
-    // dispatch(logout());
+    window.localStorage.removeItem("token");
     router.push("/");
   }
   // close on click outside

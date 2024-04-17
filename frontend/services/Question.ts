@@ -1,8 +1,4 @@
-import axios from "axios";
 import { initiateQuestion, deleteQuestion } from "@/store/actions/questionAction";
-import { initiateAnswer, deleteAnswer } from "@/store/actions/answerAction";
-import { constants } from "@/app/constants";
-import { headers } from "next/dist/client/components/headers";
 import { ApiHeader } from "@/app/apiConstants";
 import { authHeader } from "@/app/apiConstants";
 import { toast } from "react-toastify";

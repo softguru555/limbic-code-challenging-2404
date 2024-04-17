@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 
 const SignUp: React.FC = () => {
-  const [formData, setFormData] = useState({ email: '', password: '', name: '' })
+  const [formData, setFormData] = useState({ email: '', password: '', name: '', reType: '' })
   const router = useRouter();
   const handleChange = async (e) => {
     const { name, value } = e.target;
@@ -31,6 +31,18 @@ const SignUp: React.FC = () => {
       toast.success('Signup Success');
 
       router.push('./signin');
+    }
+
+    if ((await res).status == 400) {
+      toast.error("Please fill all inputs")
+    }
+
+    if ((await res).status == 401) {
+      toast.error("User already exists")
+    }
+
+    if ((await res).status == 402) {
+      toast.error("Password and Re-type password don't match")
     }
   }
 
@@ -206,6 +218,9 @@ const SignUp: React.FC = () => {
                       type="password"
                       placeholder="Re-enter your password"
                       className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary"
+                      name="reType"
+                      value={formData.reType}
+                      onChange={handleChange}
                     />
 
                     <span className="absolute right-4 top-4">
